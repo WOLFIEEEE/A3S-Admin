@@ -1,5 +1,6 @@
 'use client';
 import { navItems } from '@/constants/data';
+import { NavItem } from '@/types';
 import {
   KBarAnimator,
   KBarPortal,
@@ -39,7 +40,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
 
       // Map child items into actions
       const childActions =
-        navItem.items?.map((childItem) => ({
+        navItem.items?.map((childItem: NavItem) => ({
           id: `${childItem.title.toLowerCase()}Action`,
           name: childItem.title,
           shortcut: childItem.shortcut,

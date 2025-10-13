@@ -1,99 +1,150 @@
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { SignIn as ClerkSignInForm } from '@clerk/nextjs';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import { IconStar } from '@tabler/icons-react';
+import { IconAccessible, IconShield, IconUsers } from '@tabler/icons-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { A3SAuthLogo } from '@/components/branding/a3s-logo';
 
 export const metadata: Metadata = {
-  title: 'Authentication',
-  description: 'Authentication forms built using the components.'
+  title: 'A3S Admin | Sign In',
+  description: 'Sign in to your A3S accessibility compliance dashboard.'
 };
 
 export default function SignInViewPage({ stars }: { stars: number }) {
   return (
     <div className='relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <Link
-        href='/examples/authentication'
+        href='/dashboard'
         className={cn(
           buttonVariants({ variant: 'ghost' }),
           'absolute top-4 right-4 hidden md:top-8 md:right-8'
         )}
       >
-        Login
+        Dashboard
       </Link>
-      <div className='bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-r'>
-        <div className='absolute inset-0 bg-zinc-900' />
-        <div className='relative z-20 flex items-center text-lg font-medium'>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            className='mr-2 h-6 w-6'
-          >
-            <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
-          </svg>
-          Logo
+      <div className='relative hidden h-full flex-col bg-gradient-to-br from-blue-600 to-blue-800 p-10 text-white lg:flex dark:border-r'>
+        <div className='absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-800/90' />
+        <div className='relative z-20 flex items-center text-xl font-bold'>
+          <A3SAuthLogo className='mr-3' />
+        </div>
+        <div className='relative z-20 mt-8 space-y-6'>
+          <div>
+            <h1 className='text-3xl leading-tight font-bold'>
+              Accessibility Compliance
+              <br />
+              Reduce Legal Risk
+            </h1>
+            <p className='mt-2 text-xl font-semibold text-blue-200'>
+              AI-Powered, Human-Perfected
+            </p>
+            <p className='mt-4 text-lg text-blue-100'>
+              Comprehensive compliance solutions that help reduce your legal
+              troubles with our hybrid AI-human approach to WCAG compliance.
+            </p>
+          </div>
+
+          <div className='space-y-4'>
+            <div className='flex items-center space-x-3'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white/10'>
+                <IconShield className='h-4 w-4 text-white' />
+              </div>
+              <span className='text-blue-100'>
+                Legal Documentation Included
+              </span>
+            </div>
+            <div className='flex items-center space-x-3'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white/10'>
+                <IconUsers className='h-4 w-4 text-white' />
+              </div>
+              <span className='text-blue-100'>IAAP Certified Experts</span>
+            </div>
+            <div className='flex items-center space-x-3'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white/10'>
+                <IconAccessible className='h-4 w-4 text-white' />
+              </div>
+              <span className='text-blue-100'>WCAG 2.2 AA Guaranteed</span>
+            </div>
+          </div>
+
+          <div className='rounded-lg bg-white/5 p-4 backdrop-blur-sm'>
+            <div className='mb-2 text-sm text-blue-200'>
+              Trusted by Government & Enterprise:
+            </div>
+            <div className='grid grid-cols-2 gap-2 text-xs text-blue-100'>
+              <div>• Saguache County, CO</div>
+              <div>• Gilpin County, CO</div>
+              <div>• Kit Carson County, CO</div>
+              <div>• Wilftek</div>
+            </div>
+          </div>
         </div>
         <div className='relative z-20 mt-auto'>
           <blockquote className='space-y-2'>
             <p className='text-lg'>
-              &ldquo;This starter template has saved me countless hours of work
-              and helped me deliver projects to my clients faster than ever
-              before.&rdquo;
+              &ldquo;With A3S, we&apos;ve cut our compliance and remediation
+              time in half. What used to feel like a burden is now a seamless
+              part of the established development process.&rdquo;
             </p>
-            <footer className='text-sm'>Random Dude</footer>
+            <footer className='text-sm text-blue-200'>
+              Jason McKee, CEO, P15R
+            </footer>
           </blockquote>
         </div>
       </div>
       <div className='flex h-full items-center justify-center p-4 lg:p-8'>
-        <div className='flex w-full max-w-md flex-col items-center justify-center space-y-6'>
-          {/* github link  */}
-          <Link
-            className={cn('group inline-flex hover:text-yellow-200')}
-            target='_blank'
-            href={'https://github.com/kiranism/next-shadcn-dashboard-starter'}
-          >
-            <div className='flex items-center'>
-              <GitHubLogoIcon className='size-4' />
-              <span className='ml-1 inline'>Star on GitHub</span>{' '}
+        <div className='flex w-full max-w-md flex-col items-center justify-center space-y-8'>
+          <div className='space-y-2 text-center'>
+            <div className='mb-4 flex items-center justify-center'>
+              <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/20'>
+                <IconAccessible className='h-6 w-6 text-blue-600 dark:text-blue-400' />
+              </div>
             </div>
-            <div className='ml-2 flex items-center gap-1 text-sm md:flex'>
-              <IconStar
-                className='size-4 text-gray-500 transition-all duration-300 group-hover:text-yellow-300'
-                fill='currentColor'
-              />
-              <span className='font-display font-medium'>{stars}</span>
-            </div>
-          </Link>
+            <h2 className='text-foreground text-2xl font-bold'>
+              Welcome to A3S Admin
+            </h2>
+            <p className='text-muted-foreground'>
+              Sign in to access your accessibility compliance dashboard
+            </p>
+          </div>
+
           <ClerkSignInForm
             initialValues={{
-              emailAddress: 'your_mail+clerk_test@example.com'
+              emailAddress: 'admin@a3s.app'
             }}
           />
 
-          <p className='text-muted-foreground px-8 text-center text-sm'>
-            By clicking continue, you agree to our{' '}
-            <Link
-              href='/terms'
-              className='hover:text-primary underline underline-offset-4'
-            >
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link
-              href='/privacy'
-              className='hover:text-primary underline underline-offset-4'
-            >
-              Privacy Policy
-            </Link>
-            .
-          </p>
+          <div className='space-y-4 text-center'>
+            <p className='text-muted-foreground px-8 text-sm'>
+              By signing in, you agree to our{' '}
+              <Link
+                href='/terms'
+                className='hover:text-primary font-medium underline underline-offset-4'
+              >
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link
+                href='/privacy'
+                className='hover:text-primary font-medium underline underline-offset-4'
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+
+            <div className='border-border border-t pt-4'>
+              <p className='text-muted-foreground text-xs'>
+                Need help? Contact{' '}
+                <Link
+                  href='mailto:support@a3s.app'
+                  className='hover:text-primary font-medium underline underline-offset-4'
+                >
+                  support@a3s.app
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

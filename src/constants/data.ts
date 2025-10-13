@@ -22,10 +22,34 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Product',
-    url: '/dashboard/product',
-    icon: 'product',
+    title: 'Clients',
+    url: '/dashboard/clients',
+    icon: 'users',
+    shortcut: ['c', 'c'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Projects',
+    url: '/dashboard/projects',
+    icon: 'folder',
     shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Tickets',
+    url: '/dashboard/tickets',
+    icon: 'ticket',
+    shortcut: ['t', 't'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Issues',
+    url: '/dashboard/issues',
+    icon: 'bug',
+    shortcut: ['i', 'i'],
     isActive: false,
     items: [] // No child items
   },
@@ -49,65 +73,69 @@ export const navItems: NavItem[] = [
         icon: 'login'
       }
     ]
-  },
-  {
-    title: 'Kanban',
-    url: '/dashboard/kanban',
-    icon: 'kanban',
-    shortcut: ['k', 'k'],
-    isActive: false,
-    items: [] // No child items
   }
 ];
 
-export interface SaleUser {
+export interface ClientActivity {
   id: number;
   name: string;
   email: string;
-  amount: string;
+  activity: string;
+  company: string;
   image: string;
   initials: string;
+  timestamp: string;
 }
 
-export const recentSalesData: SaleUser[] = [
+export const recentClientActivity: ClientActivity[] = [
   {
     id: 1,
-    name: 'Olivia Martin',
-    email: 'olivia.martin@email.com',
-    amount: '+$1,999.00',
+    name: 'John Smith',
+    email: 'john@saguachecounty.net',
+    activity: 'New project created',
+    company: 'Saguache County, CO',
     image: 'https://api.slingacademy.com/public/sample-users/1.png',
-    initials: 'OM'
+    initials: 'JS',
+    timestamp: '2 hours ago'
   },
   {
     id: 2,
-    name: 'Jackson Lee',
-    email: 'jackson.lee@email.com',
-    amount: '+$39.00',
+    name: 'Sarah Johnson',
+    email: 'sarah@gilpincounty.org',
+    activity: 'Ticket resolved',
+    company: 'Gilpin County, CO',
     image: 'https://api.slingacademy.com/public/sample-users/2.png',
-    initials: 'JL'
+    initials: 'SJ',
+    timestamp: '4 hours ago'
   },
   {
     id: 3,
-    name: 'Isabella Nguyen',
-    email: 'isabella.nguyen@email.com',
-    amount: '+$299.00',
+    name: 'Mike Rodriguez',
+    email: 'mike@wilftek.com',
+    activity: 'File uploaded',
+    company: 'Wilftek',
     image: 'https://api.slingacademy.com/public/sample-users/3.png',
-    initials: 'IN'
+    initials: 'MR',
+    timestamp: '6 hours ago'
   },
   {
     id: 4,
-    name: 'William Kim',
-    email: 'will@email.com',
-    amount: '+$99.00',
+    name: 'Lisa Chen',
+    email: 'lisa@kitcarsoncounty.org',
+    activity: 'Compliance review completed',
+    company: 'Kit Carson County, CO',
     image: 'https://api.slingacademy.com/public/sample-users/4.png',
-    initials: 'WK'
+    initials: 'LC',
+    timestamp: '1 day ago'
   },
   {
     id: 5,
-    name: 'Sofia Davis',
-    email: 'sofia.davis@email.com',
-    amount: '+$39.00',
+    name: 'David Wilson',
+    email: 'david@mrocorp.com',
+    activity: 'Project milestone reached',
+    company: 'MRO Corp',
     image: 'https://api.slingacademy.com/public/sample-users/5.png',
-    initials: 'SD'
+    initials: 'DW',
+    timestamp: '2 days ago'
   }
 ];

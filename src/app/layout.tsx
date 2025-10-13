@@ -16,8 +16,30 @@ const META_THEME_COLORS = {
 };
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'A3S Admin Dashboard',
+  description:
+    'A3S accessibility compliance dashboard - Comprehensive WCAG 2.2 AA compliance solutions with AI-powered automation and expert oversight.',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png' }
+    ],
+    apple: [{ url: '/icon.png', sizes: '180x180', type: 'image/png' }]
+  },
+  manifest: '/manifest.json',
+  applicationName: 'A3S Admin Dashboard',
+  keywords: [
+    'accessibility',
+    'WCAG',
+    'compliance',
+    'A3S',
+    'admin',
+    'dashboard'
+  ],
+  authors: [{ name: 'A3S Team' }],
+  creator: 'A3S',
+  publisher: 'A3S',
+  robots: 'noindex, nofollow' // Admin dashboard should not be indexed
 };
 
 export const viewport: Viewport = {
@@ -29,10 +51,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const activeThemeValue = cookieStore.get('active_theme')?.value;
-  const isScaled = activeThemeValue?.endsWith('-scaled');
-
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
@@ -49,12 +67,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={cn(
-          'bg-background overflow-hidden overscroll-none font-sans antialiased',
-          activeThemeValue ? `theme-${activeThemeValue}` : '',
-          isScaled ? 'theme-scaled' : '',
-          fontVariables
-        )}
+        className={cn('bg-background font-sans antialiased', fontVariables)}
       >
         <NextTopLoader color='var(--primary)' showSpinner={false} />
         <NuqsAdapter>
@@ -65,7 +78,7 @@ export default async function RootLayout({
             disableTransitionOnChange
             enableColorScheme
           >
-            <Providers activeThemeValue={activeThemeValue as string}>
+            <Providers>
               <Toaster />
               {children}
             </Providers>
