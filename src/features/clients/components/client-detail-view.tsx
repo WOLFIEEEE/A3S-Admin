@@ -12,31 +12,17 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
 import {
   IconBuilding,
   IconMail,
   IconPhone,
-  IconMapPin,
   IconCurrencyDollar,
   IconCalendar,
   IconEdit,
-  IconTrash,
   IconPlus,
   IconFileText,
   IconUsers,
-  IconClock,
   IconTrendingUp,
-  IconAlertTriangle,
-  IconCheck,
-  IconActivity,
   IconKey,
   IconShield
 } from '@tabler/icons-react';
@@ -83,7 +69,7 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
   const [documents, setDocuments] = useState<ProjectDocument[]>([]);
   const [activities, setActivities] = useState<ProjectActivity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showEditProject, setShowEditProject] = useState<Project | null>(null);
+  const [_showEditProject, setShowEditProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const loadClientData = async () => {
@@ -121,7 +107,6 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
         setDocuments([]);
         setActivities([]);
       } catch (error) {
-        console.error('Error loading client data:', error);
         toast.error('Failed to load client data');
         setClient(null);
       } finally {
@@ -138,17 +123,14 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
 
   const handleDeleteProject = async (projectId: string) => {
     try {
-      // In a real app, make API call to delete project
-      console.log('Deleting project:', projectId);
-      toast.success('Project deleted successfully!');
+      // In a real app, make API call to delete project      toast.success('Project deleted successfully!');
       // Refresh projects list
     } catch (error) {
-      console.error('Error deleting project:', error);
       toast.error('Failed to delete project');
     }
   };
 
-  const formatCurrency = (amount: number | string) =>
+  const _formatCurrency = (amount: number | string) =>
     new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
@@ -403,9 +385,9 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
                           Services Needed:
                         </span>
                         <div className='mt-1 flex flex-wrap gap-1'>
-                          {client.servicesNeeded.map((service, index) => (
+                          {client.servicesNeeded.map((service, _index) => (
                             <Badge
-                              key={index}
+                              key={_index}
                               variant='outline'
                               className='text-xs'
                             >
@@ -421,9 +403,9 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
                         Priority Areas:
                       </span>
                       <div className='mt-1 flex flex-wrap gap-1'>
-                        {client.priorityAreas.map((area, index) => (
+                        {client.priorityAreas.map((area, _index) => (
                           <Badge
-                            key={index}
+                            key={_index}
                             variant='outline'
                             className='text-xs'
                           >
@@ -564,7 +546,7 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
                       Total Project Budget:
                     </span>
                     <span className='font-medium'>
-                      {formatCurrency(
+                      {_formatCurrency(
                         projects.reduce((sum, p) => sum + (p.budget || 0), 0)
                       )}
                     </span>
@@ -674,9 +656,9 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
                             Required Compliance Documents
                           </h5>
                           <div className='mt-2 flex flex-wrap gap-2'>
-                            {client.complianceDocuments.map((doc, index) => (
+                            {client.complianceDocuments.map((doc, _index) => (
                               <Badge
-                                key={index}
+                                key={_index}
                                 variant='outline'
                                 className='text-xs'
                               >

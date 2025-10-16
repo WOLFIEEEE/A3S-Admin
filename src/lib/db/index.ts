@@ -31,7 +31,13 @@ const client = postgres(connectionString, {
   prepare: false,
   max: 20, // Maximum number of connections
   idle_timeout: 20, // Close idle connections after 20 seconds
-  connect_timeout: 10 // Connection timeout
+  connect_timeout: 10, // Connection timeout
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: true }
+      : process.env.DATABASE_URL?.includes('localhost')
+        ? false
+        : { rejectUnauthorized: false } // Allow self-signed certs in dev
 });
 
 // Drizzle database instance with schema

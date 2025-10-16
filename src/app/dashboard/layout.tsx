@@ -26,7 +26,7 @@ export default async function DashboardLayout({
         <SidebarInset className='flex min-h-screen flex-col'>
           <Header />
           {/* page main content */}
-          <div className='flex-1 pt-4'>{children}</div>
+          <main className='flex-1 pb-16'>{children}</main>
           {/* page main content ends */}
           <MiniFooter />
         </SidebarInset>

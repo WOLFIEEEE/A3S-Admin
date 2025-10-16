@@ -28,8 +28,6 @@ import {
   IconExternalLink,
   IconCalendar,
   IconUser,
-  IconCode,
-  IconShield,
   IconAlertTriangle
 } from '@tabler/icons-react';
 import Link from 'next/link';

@@ -38,7 +38,7 @@ export default async function IssuesPage() {
   ]);
 
   return (
-    <PageContainer scrollable={true}>
+    <PageContainer>
       <div className='w-full space-y-6'>
         <EnhancedIssuesTable data={issues} projects={projects} />
       </div>

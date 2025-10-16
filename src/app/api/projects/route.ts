@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createProject, getAllProjects } from '@/lib/db/queries/projects';
-import { CreateProjectInput } from '@/types/project';
 
 // Validation schema for project creation
 const createProjectSchema = z.object({
@@ -10,7 +9,7 @@ const createProjectSchema = z.object({
   description: z.string().optional(),
   sheetId: z.string().optional(),
   priority: z.enum(['low', 'medium', 'high', 'urgent']),
-  wcagLevel: z.enum(['A', 'AA', 'AAA']),
+  wcagLevel: z.enum(['A', 'AA', 'AA']),
   projectType: z.enum([
     'audit',
     'remediation',
@@ -56,7 +55,6 @@ export async function GET(request: NextRequest) {
       count: Array.isArray(projects) ? projects.length : projects.total
     });
   } catch (error) {
-    console.error('Error fetching projects:', error);
     return NextResponse.json(
       {
         success: false,
@@ -111,8 +109,6 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error creating project:', error);
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

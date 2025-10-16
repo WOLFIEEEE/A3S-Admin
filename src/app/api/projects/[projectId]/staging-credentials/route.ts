@@ -49,7 +49,6 @@ export async function GET(
       count: credentials.length
     });
   } catch (error) {
-    console.error('Error fetching staging credentials:', error);
     return NextResponse.json(
       {
         success: false,
@@ -115,8 +114,6 @@ export async function POST(
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error creating staging credentials:', error);
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

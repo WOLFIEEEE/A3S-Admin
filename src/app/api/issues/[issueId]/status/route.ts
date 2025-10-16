@@ -20,7 +20,6 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(updatedIssue);
   } catch (error) {
-    console.error('Error updating issue status:', error);
     return NextResponse.json(
       { error: 'Failed to update issue status' },
       { status: 500 }

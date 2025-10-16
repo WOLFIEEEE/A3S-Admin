@@ -16,10 +16,10 @@ const ResultItem = React.forwardRef(
   ) => {
     const ancestors = React.useMemo(() => {
       if (!currentRootActionId) return action.ancestors;
-      const index = action.ancestors.findIndex(
+      const _index = action.ancestors.findIndex(
         (ancestor) => ancestor.id === currentRootActionId
       );
-      return action.ancestors.slice(index + 1);
+      return action.ancestors.slice(_index + 1);
     }, [action.ancestors, currentRootActionId]);
 
     return (

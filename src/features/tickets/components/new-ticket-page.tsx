@@ -40,7 +40,6 @@ export default function NewTicketPage({
       // Redirect to the new ticket's detail page
       router.push(`/dashboard/tickets/${result.data.id}`);
     } catch (error) {
-      console.error('Error creating ticket:', error);
       toast.error(
         error instanceof Error ? error.message : 'Failed to create ticket'
       );

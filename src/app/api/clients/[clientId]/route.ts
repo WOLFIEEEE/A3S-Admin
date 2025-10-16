@@ -40,7 +40,6 @@ export async function GET(
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error fetching client:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch client' },
       { status: 500 }
@@ -95,8 +94,6 @@ export async function PUT(
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error updating client:', error);
-
     // Handle unique constraint violations
     if (error instanceof Error && error.message.includes('unique constraint')) {
       return NextResponse.json(
@@ -146,7 +143,6 @@ export async function DELETE(
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error deleting client:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to delete client' },
       { status: 500 }

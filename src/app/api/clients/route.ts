@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { CreateClientInput, Client, ApiResponse } from '@/types';
+import { Client, ApiResponse } from '@/types';
 import { getAllClients, createClient } from '@/lib/db/queries/clients';
 import { z } from 'zod';
 
@@ -11,7 +11,15 @@ const createClientSchema = z.object({
   address: z.string().optional(),
   billingAmount: z.number().min(0, 'Billing amount must be positive'),
   billingStartDate: z.date(),
-  billingFrequency: z.enum(['monthly', 'quarterly', 'yearly']),
+  billingFrequency: z.enum([
+    'daily',
+    'weekly',
+    'bi-weekly',
+    'monthly',
+    'quarterly',
+    'half-yearly',
+    'yearly'
+  ]),
   status: z
     .enum(['active', 'inactive', 'pending', 'suspended'])
     .default('pending'),
@@ -29,7 +37,7 @@ const createClientSchema = z.object({
     .optional(),
   paymentMethod: z.enum(['credit_card', 'ach', 'wire', 'check']).optional(),
   servicesNeeded: z.array(z.string()).default([]),
-  wcagLevel: z.enum(['A', 'AA', 'AAA']).optional(),
+  wcagLevel: z.enum(['A', 'AA', 'AA']).optional(),
   priorityAreas: z.array(z.string()).default([]),
   timeline: z
     .enum(['immediate', '1-3_months', '3-6_months', '6-12_months', 'ongoing'])
@@ -78,7 +86,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error fetching clients:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch clients' },
       { status: 500 }
@@ -131,8 +138,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response, { status: 201 });
   } catch (error) {
-    console.error('Error creating client:', error);
-
     // Handle unique constraint violations
     if (error instanceof Error && error.message.includes('unique constraint')) {
       return NextResponse.json(

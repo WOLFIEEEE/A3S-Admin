@@ -54,6 +54,35 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
+    title: 'Reports',
+    url: '/dashboard/reports',
+    icon: 'post',
+    shortcut: ['r', 'r'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Team Management',
+    url: '/dashboard/teams',
+    icon: 'users',
+    shortcut: ['t', 'm'],
+    isActive: false,
+    items: [
+      {
+        title: 'Teams Overview',
+        url: '/dashboard/teams',
+        icon: 'users',
+        shortcut: ['t', 'o']
+      },
+      {
+        title: 'Organization Chart',
+        url: '/dashboard/teams/organization-chart',
+        icon: 'hierarchy',
+        shortcut: ['o', 'c']
+      }
+    ]
+  },
+  {
     title: 'Account',
     url: '#', // Placeholder as there is no direct link for the parent
     icon: 'billing',

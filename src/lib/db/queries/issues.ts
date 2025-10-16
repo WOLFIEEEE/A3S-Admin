@@ -5,7 +5,8 @@ import {
   issueComments,
   projects
 } from '@/lib/db/schema';
-import { eq, desc, asc, and, or, like, inArray, sql, count } from 'drizzle-orm';
+import { eq, desc, asc, and, or, like, inArray, count } from 'drizzle-orm';
+// import sql
 import type {
   AccessibilityIssue,
   IssueComment,

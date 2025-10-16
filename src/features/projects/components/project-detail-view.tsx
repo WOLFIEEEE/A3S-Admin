@@ -12,30 +12,22 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import {
   IconBuilding,
   IconCalendar,
-  IconCurrencyDollar,
   IconEdit,
-  IconTrash,
   IconPlus,
-  IconFileText,
   IconUsers,
   IconClock,
   IconTrendingUp,
-  IconAlertTriangle,
   IconCheck,
-  IconActivity,
   IconAccessible,
   IconTarget,
   IconShield,
   IconBug,
   IconList,
-  IconChartBar,
   IconFolder,
-  IconMessage,
   IconDownload,
   IconUpload
 } from '@tabler/icons-react';
@@ -45,9 +37,10 @@ import { Ticket } from '@/types';
 import { toast } from 'sonner';
 import { ProjectDocumentUpload } from '@/components/project-document-upload';
 import { ProjectStagingCredentials } from '@/components/project-staging-credentials';
+import { formatDate } from '@/lib/format';
 
 interface ProjectDetailViewProps {
-  clientId: string;
+  clientId?: string;
   projectId: string;
 }
 
@@ -105,27 +98,34 @@ export default function ProjectDetailView({
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [issues, setIssues] = useState<ProjectIssue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [actualClientId, setActualClientId] = useState<string>(clientId || '');
 
   useEffect(() => {
     const loadProjectData = async () => {
       try {
         setIsLoading(true);
 
-        // Fetch client data
-        const clientResponse = await fetch(`/api/clients/${clientId}`);
-        if (clientResponse.ok) {
-          const clientResult = await clientResponse.json();
-          if (clientResult.success) {
-            setClient(clientResult.data);
-          }
-        }
-
-        // Fetch project data
+        // Fetch project data first to get clientId if not provided
         const projectResponse = await fetch(`/api/projects/${projectId}`);
         if (projectResponse.ok) {
           const projectResult = await projectResponse.json();
           if (projectResult.success) {
             setProject(projectResult.data);
+            const projectClientId = projectResult.data.clientId;
+            setActualClientId(projectClientId);
+
+            // Fetch client data using the clientId from project
+            if (projectClientId) {
+              const clientResponse = await fetch(
+                `/api/clients/${projectClientId}`
+              );
+              if (clientResponse.ok) {
+                const clientResult = await clientResponse.json();
+                if (clientResult.success) {
+                  setClient(clientResult.data);
+                }
+              }
+            }
           }
         }
 
@@ -143,7 +143,6 @@ export default function ProjectDetailView({
         // For now, use empty array for issues until Node.js service is implemented
         setIssues([]);
       } catch (error) {
-        console.error('Error loading project data:', error);
         toast.error('Failed to load project data');
       } finally {
         setIsLoading(false);
@@ -159,13 +158,6 @@ export default function ProjectDetailView({
       currency: 'USD'
     }).format(amount);
 
-  const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    }).format(date);
-
   if (isLoading) {
     return (
       <div className='flex h-64 items-center justify-center'>
@@ -177,7 +169,7 @@ export default function ProjectDetailView({
     );
   }
 
-  if (!project || !client) {
+  if (!project) {
     return (
       <div className='py-12 text-center'>
         <IconFolder className='text-muted-foreground mx-auto mb-4 h-16 w-16 opacity-50' />
@@ -216,12 +208,12 @@ export default function ProjectDetailView({
                   </Badge>
                 </div>
                 <CardDescription className='text-lg'>
-                  {client.company}
+                  {client?.company || 'Loading client...'}
                 </CardDescription>
                 <div className='text-muted-foreground mt-3 flex items-center gap-6 text-sm'>
                   <div className='flex items-center gap-2'>
                     <IconBuilding className='h-4 w-4' />
-                    <span>Client: {client.name}</span>
+                    <span>Client: {client?.name || 'Loading...'}</span>
                   </div>
                   <div className='flex items-center gap-2'>
                     <IconAccessible className='h-4 w-4' />
@@ -229,7 +221,14 @@ export default function ProjectDetailView({
                   </div>
                   <div className='flex items-center gap-2'>
                     <IconCalendar className='h-4 w-4' />
-                    <span>Created {formatDate(project.createdAt)}</span>
+                    <span>
+                      Created{' '}
+                      {formatDate(project.createdAt, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -353,7 +352,11 @@ export default function ProjectDetailView({
                     <div className='flex justify-between'>
                       <span className='text-muted-foreground'>Start Date:</span>
                       <span className='font-medium'>
-                        {formatDate(project.startDate)}
+                        {formatDate(project.startDate, {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
                       </span>
                     </div>
                   )}
@@ -361,7 +364,11 @@ export default function ProjectDetailView({
                     <div className='flex justify-between'>
                       <span className='text-muted-foreground'>End Date:</span>
                       <span className='font-medium'>
-                        {formatDate(project.endDate)}
+                        {formatDate(project.endDate, {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
                       </span>
                     </div>
                   )}
@@ -390,9 +397,9 @@ export default function ProjectDetailView({
                 project.complianceRequirements.length > 0 ? (
                   <div className='flex flex-wrap gap-2'>
                     {project.complianceRequirements.map(
-                      (requirement, index) => (
+                      (requirement, _index) => (
                         <Badge
-                          key={index}
+                          key={_index}
                           variant='outline'
                           className='text-xs'
                         >
@@ -420,9 +427,9 @@ export default function ProjectDetailView({
               <CardContent className='space-y-4'>
                 {project.deliverables && project.deliverables.length > 0 ? (
                   <ul className='space-y-2'>
-                    {project.deliverables.map((deliverable, index) => (
+                    {project.deliverables.map((deliverable, _index) => (
                       <li
-                        key={index}
+                        key={_index}
                         className='flex items-start gap-2 text-sm'
                       >
                         <IconCheck className='mt-0.5 h-4 w-4 flex-shrink-0 text-green-500' />
@@ -450,9 +457,9 @@ export default function ProjectDetailView({
                 {project.acceptanceCriteria &&
                 project.acceptanceCriteria.length > 0 ? (
                   <ul className='space-y-2'>
-                    {project.acceptanceCriteria.map((criteria, index) => (
+                    {project.acceptanceCriteria.map((criteria, _index) => (
                       <li
-                        key={index}
+                        key={_index}
                         className='flex items-start gap-2 text-sm'
                       >
                         <IconCheck className='mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500' />
@@ -491,8 +498,8 @@ export default function ProjectDetailView({
               </CardHeader>
               <CardContent>
                 <div className='flex flex-wrap gap-2'>
-                  {project.tags.map((tag, index) => (
-                    <Badge key={index} variant='secondary' className='text-xs'>
+                  {project.tags.map((tag, _index) => (
+                    <Badge key={_index} variant='secondary' className='text-xs'>
                       {tag}
                     </Badge>
                   ))}
@@ -562,9 +569,9 @@ export default function ProjectDetailView({
                       </div>
                       {issue.wcagCriteria.length > 0 && (
                         <div className='mb-2 flex flex-wrap gap-1'>
-                          {issue.wcagCriteria.map((criteria, index) => (
+                          {issue.wcagCriteria.map((criteria, _index) => (
                             <Badge
-                              key={index}
+                              key={_index}
                               variant='outline'
                               className='text-xs'
                             >
@@ -631,7 +638,14 @@ export default function ProjectDetailView({
                             {ticket.estimatedHours && (
                               <span>Est: {ticket.estimatedHours}h</span>
                             )}
-                            <span>Created: {formatDate(ticket.createdAt)}</span>
+                            <span>
+                              Created:{' '}
+                              {formatDate(ticket.createdAt, {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </span>
                           </div>
                         </div>
                         <Button variant='outline' size='sm'>

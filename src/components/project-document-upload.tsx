@@ -116,7 +116,6 @@ export function ProjectDocumentUpload({
         throw new Error(result.error || 'Upload failed');
       }
     } catch (error) {
-      console.error('Upload error:', error);
       toast.error(error instanceof Error ? error.message : 'Upload failed');
     } finally {
       setIsUploading(false);
@@ -151,7 +150,6 @@ export function ProjectDocumentUpload({
       toast.success('Document deleted successfully');
       onDocumentUploaded?.();
     } catch (error) {
-      console.error('Delete error:', error);
       toast.error('Failed to delete document');
     }
   };

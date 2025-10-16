@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { FileEncryption } from './encryption';
-import { ClientFile, ClientFileCategory } from '@/types';
+import { ClientFileCategory } from '@/types';
 
 export class FileStorageService {
   private static readonly UPLOAD_DIR = process.env.UPLOAD_DIR || './uploads';
@@ -105,9 +105,6 @@ export class FileStorageService {
       await fs.unlink(fullPath);
     } catch (error) {
       // File might not exist, which is okay for deletion
-      console.warn(
-        `File deletion warning: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
     }
   }
 
@@ -207,9 +204,6 @@ export class FileStorageService {
         totalSize += categoryStats[category].size;
       } catch (error) {
         // Category directory might not exist yet
-        console.warn(
-          `Storage stats warning for ${category}: ${error instanceof Error ? error.message : 'Unknown error'}`
-        );
       }
     }
 

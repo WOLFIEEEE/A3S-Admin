@@ -104,19 +104,22 @@ export default function ClientFileUpload({
     }
   });
 
-  const updateQueueItem = (index: number, updates: Partial<FileUploadItem>) => {
+  const updateQueueItem = (
+    _index: number,
+    updates: Partial<FileUploadItem>
+  ) => {
     setUploadQueue((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, ...updates } : item))
+      prev.map((item, i) => (i === _index ? { ...item, ...updates } : item))
     );
   };
 
-  const removeFromQueue = (index: number) => {
-    setUploadQueue((prev) => prev.filter((_, i) => i !== index));
+  const removeFromQueue = (_index: number) => {
+    setUploadQueue((prev) => prev.filter((_, i) => i !== _index));
   };
 
-  const uploadFile = async (item: FileUploadItem, index: number) => {
+  const uploadFile = async (item: FileUploadItem, _index: number) => {
     try {
-      updateQueueItem(index, { status: 'uploading', progress: 0 });
+      updateQueueItem(_index, { status: 'uploading', progress: 0 });
 
       const formData = new FormData();
       formData.append('file', item.file);
@@ -126,7 +129,7 @@ export default function ClientFileUpload({
 
       // Simulate progress for demo (replace with actual upload progress)
       const progressInterval = setInterval(() => {
-        updateQueueItem(index, {
+        updateQueueItem(_index, {
           progress: Math.min(item.progress + Math.random() * 30, 90)
         });
       }, 200);
@@ -144,7 +147,7 @@ export default function ClientFileUpload({
 
       const result = await response.json();
 
-      updateQueueItem(index, { status: 'completed', progress: 100 });
+      updateQueueItem(_index, { status: 'completed', progress: 100 });
 
       if (onFileUploaded && result.data) {
         onFileUploaded(result.data);
@@ -153,9 +156,9 @@ export default function ClientFileUpload({
       toast.success(`File ${item.file.name} uploaded successfully`);
 
       // Remove from queue after a delay
-      setTimeout(() => removeFromQueue(index), 2000);
+      setTimeout(() => removeFromQueue(_index), 2000);
     } catch (error) {
-      updateQueueItem(index, {
+      updateQueueItem(_index, {
         status: 'error',
         error: error instanceof Error ? error.message : 'Upload failed'
       });
@@ -165,11 +168,11 @@ export default function ClientFileUpload({
 
   const uploadAll = async () => {
     const pendingItems = uploadQueue
-      .map((item, index) => ({ item, index }))
+      .map((item, _index) => ({ item, _index }))
       .filter(({ item }) => item.status === 'pending');
 
-    for (const { item, index } of pendingItems) {
-      await uploadFile(item, index);
+    for (const { item, _index } of pendingItems) {
+      await uploadFile(item, _index);
     }
   };
 
@@ -314,9 +317,9 @@ export default function ClientFileUpload({
                 </Button>
               </div>
 
-              {uploadQueue.map((item, index) => (
+              {uploadQueue.map((item, _index) => (
                 <div
-                  key={index}
+                  key={_index}
                   className='flex items-center gap-3 rounded-lg border p-3'
                 >
                   <IconFile className='text-muted-foreground h-4 w-4' />
@@ -368,7 +371,7 @@ export default function ClientFileUpload({
                         <Select
                           value={item.category}
                           onValueChange={(value: ClientFileCategory) =>
-                            updateQueueItem(index, { category: value })
+                            updateQueueItem(_index, { category: value })
                           }
                         >
                           <SelectTrigger className='w-32'>
@@ -386,7 +389,7 @@ export default function ClientFileUpload({
 
                         <Button
                           size='sm'
-                          onClick={() => uploadFile(item, index)}
+                          onClick={() => uploadFile(item, _index)}
                         >
                           Upload
                         </Button>
@@ -396,7 +399,7 @@ export default function ClientFileUpload({
                     <Button
                       size='sm'
                       variant='ghost'
-                      onClick={() => removeFromQueue(index)}
+                      onClick={() => removeFromQueue(_index)}
                       disabled={item.status === 'uploading'}
                     >
                       <IconTrash className='h-4 w-4' />

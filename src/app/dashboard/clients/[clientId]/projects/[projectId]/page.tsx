@@ -29,8 +29,8 @@ export default async function ProjectDetailPage({
   const { clientId, projectId } = await params;
 
   return (
-    <PageContainer scrollable={true}>
-      <div className='flex min-h-full w-full flex-col space-y-6'>
+    <PageContainer>
+      <div className='flex w-full flex-col space-y-6'>
         {/* Breadcrumb Navigation */}
         <div className='flex-shrink-0'>
           <Breadcrumb>

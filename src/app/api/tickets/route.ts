@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { CreateTicketInput, Ticket, ApiResponse } from '@/types';
+import { Ticket, ApiResponse } from '@/types';
 import {
   getAllTickets,
   createTicket,
@@ -70,7 +70,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error fetching tickets:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch tickets' },
       { status: 500 }
@@ -111,7 +110,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response, { status: 201 });
   } catch (error) {
-    console.error('Error creating ticket:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to create ticket' },
       { status: 500 }

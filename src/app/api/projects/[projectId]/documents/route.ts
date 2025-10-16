@@ -51,7 +51,6 @@ export async function GET(
       count: documents.length
     });
   } catch (error) {
-    console.error('Error fetching project documents:', error);
     return NextResponse.json(
       {
         success: false,
@@ -116,8 +115,6 @@ export async function POST(
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error creating project document:', error);
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

@@ -79,7 +79,7 @@ export const techStackEnum = pgEnum('tech_stack', [
 export const projectWcagLevelEnum = pgEnum('project_wcag_level', [
   'A',
   'AA',
-  'AAA'
+  'AA'
 ]);
 export const billingTypeEnum = pgEnum('billing_type', [
   'fixed',

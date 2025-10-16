@@ -23,8 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { DataTable, FilterConfig } from '@/components/ui/data-table';
-import { AccessibilityIssueWithRelations } from '@/types/accessibility';
+import { DataTable } from '@/components/ui/data-table';
 import { IssueWithRelations } from '@/lib/db/queries/issues';
 
 const severityColors = {
@@ -360,138 +359,19 @@ export const columns: ColumnDef<IssueWithRelations>[] = [
   }
 ];
 
-const filters: FilterConfig[] = [
-  {
-    key: 'project',
-    label: 'Project',
-    type: 'select',
-    placeholder: 'All Projects',
-    options: [] // Will be populated dynamically
-  },
-  {
-    key: 'severity',
-    label: 'Severity',
-    type: 'select',
-    placeholder: 'All Severities',
-    options: [
-      { label: 'Critical', value: '1_critical' },
-      { label: 'High', value: '2_high' },
-      { label: 'Medium', value: '3_medium' },
-      { label: 'Low', value: '4_low' }
-    ]
-  },
-  {
-    key: 'issueType',
-    label: 'Issue Type',
-    type: 'select',
-    placeholder: 'All Types',
-    options: [
-      { label: 'Keyboard Navigation', value: 'keyboard_navigation' },
-      { label: 'Screen Reader', value: 'screen_reader' },
-      { label: 'Color Contrast', value: 'color_contrast' },
-      { label: 'Focus Management', value: 'focus_management' },
-      { label: 'ARIA Labels', value: 'aria_labels' },
-      { label: 'Semantic Markup', value: 'semantic_markup' },
-      { label: 'Form Validation', value: 'form_validation' },
-      { label: 'Multimedia', value: 'multimedia' },
-      { label: 'Other', value: 'other' }
-    ]
-  },
-  {
-    key: 'devStatus',
-    label: 'Dev Status',
-    type: 'select',
-    placeholder: 'All Dev Statuses',
-    options: [
-      { label: 'Not Started', value: 'not_started' },
-      { label: 'In Progress', value: 'in_progress' },
-      { label: 'Done', value: 'done' },
-      { label: 'Blocked', value: 'blocked' },
-      { label: '3rd Party', value: '3rd_party' },
-      { label: "Won't Fix", value: 'wont_fix' }
-    ]
-  },
-  {
-    key: 'qaStatus',
-    label: 'QA Status',
-    type: 'select',
-    placeholder: 'All QA Statuses',
-    options: [
-      { label: 'Not Started', value: 'not_started' },
-      { label: 'In Progress', value: 'in_progress' },
-      { label: 'Fixed', value: 'fixed' },
-      { label: 'Verified', value: 'verified' },
-      { label: 'Failed', value: 'failed' },
-      { label: '3rd Party', value: '3rd_party' }
-    ]
-  },
-  {
-    key: 'conformanceLevel',
-    label: 'WCAG Level',
-    type: 'select',
-    placeholder: 'All Levels',
-    options: [
-      { label: 'Level A', value: 'level_a' },
-      { label: 'Level AA', value: 'level_aa' },
-      { label: 'Level AAA', value: 'level_aaa' }
-    ]
-  },
-  {
-    key: 'isDuplicate',
-    label: 'Duplicate Status',
-    type: 'select',
-    placeholder: 'All Issues',
-    options: [
-      { label: 'Original Issues', value: 'false' },
-      { label: 'Duplicate Issues', value: 'true' }
-    ]
-  }
-];
+// Temporarily removed filters until advanced DataTable is implemented
 
 interface IssuesOverviewTableProps {
   data: IssueWithRelations[];
 }
 
-export function IssuesOverviewTable({ data }: IssuesOverviewTableProps) {
-  // Extract unique projects from the data
-  const uniqueProjects = Array.from(
-    new Set(
-      data
-        .filter((issue) => issue.project)
-        .map((issue) => issue.project!)
-        .map((project) =>
-          JSON.stringify({ id: project.id, name: project.name })
-        )
-    )
-  ).map((projectStr) => JSON.parse(projectStr));
-
-  // Update the project filter options
-  const dynamicFilters = filters.map((filter) => {
-    if (filter.key === 'project') {
-      return {
-        ...filter,
-        options: uniqueProjects.map((project) => ({
-          label: project.name,
-          value: project.id
-        }))
-      };
-    }
-    return filter;
-  });
+export function IssuesOverviewTable({ data = [] }: IssuesOverviewTableProps) {
+  // Ensure data is always an array
+  const safeData = Array.isArray(data) ? data : [];
 
   return (
     <div className='w-full'>
-      <DataTable
-        columns={columns}
-        data={data}
-        searchKey='issueTitle'
-        searchPlaceholder='Search issues...'
-        filters={dynamicFilters}
-        enableExport={true}
-        title='Issues Overview'
-        description='Comprehensive view of all accessibility issues with advanced filtering and tracking capabilities'
-        initialColumnVisibility={{ project: false }}
-      />
+      <DataTable columns={columns} data={safeData} />
     </div>
   );
 }

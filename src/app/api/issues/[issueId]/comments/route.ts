@@ -16,7 +16,6 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(newComment);
   } catch (error) {
-    console.error('Error adding comment:', error);
     return NextResponse.json(
       { error: 'Failed to add comment' },
       { status: 500 }

@@ -10,9 +10,16 @@ export interface CreateClientInput {
   company: string;
   phone?: string;
   address?: string;
-  billingAmount: number;
-  billingFrequency: 'monthly' | 'quarterly' | 'yearly';
-  billingStartDate: Date;
+  billingAmount?: number;
+  billingFrequency?:
+    | 'daily'
+    | 'weekly'
+    | 'bi-weekly'
+    | 'monthly'
+    | 'quarterly'
+    | 'half-yearly'
+    | 'yearly';
+  billingStartDate?: Date;
   status: 'pending' | 'active' | 'inactive' | 'suspended';
   notes?: string;
 }

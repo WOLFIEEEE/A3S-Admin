@@ -1,43 +1,62 @@
 // Client form types and interfaces
 export interface CreateClientInput {
-  clientType: 'a3s' | 'p15r';
+  // Contact Information
   name: string;
   email: string;
   company: string;
-  timeZone: string;
-  status: 'active' | 'inactive' | 'pending' | 'suspended';
-  agreedToTerms: boolean;
   phone?: string;
-  website?: string;
   address?: string;
-  city?: string;
-  state?: string;
-  zipCode?: string;
-  country?: string;
+
+  // Business Details
+  companySize?: '1-10' | '11-50' | '51-200' | '201-1000' | '1000+';
   industry?: string;
-  companySize?: string;
-  primaryContact?: string;
-  primaryContactEmail?: string;
-  primaryContactPhone?: string;
-  secondaryContact?: string;
-  secondaryContactEmail?: string;
-  secondaryContactPhone?: string;
-  technicalContact?: string;
-  technicalContactEmail?: string;
-  technicalContactPhone?: string;
-  billingContact?: string;
-  billingContactEmail?: string;
-  billingContactPhone?: string;
-  accessibilityGoals?: string;
-  currentAccessibilityLevel?: string;
-  targetAccessibilityLevel?: string;
-  complianceRequirements?: string;
+  website?: string;
+  currentAccessibilityLevel?: 'none' | 'basic' | 'partial' | 'compliant';
+  complianceDeadline?: Date;
+  wcagLevel: 'A' | 'AA' | 'AAA';
+
+  // Billing & Pricing (optional - handled automatically)
+  billingAmount?: number;
+  billingFrequency?:
+    | 'daily'
+    | 'weekly'
+    | 'bi-weekly'
+    | 'monthly'
+    | 'quarterly'
+    | 'half-yearly'
+    | 'yearly';
+  billingStartDate?: Date;
+
+  // Documents & Policies
+  hasAccessibilityPolicy?: boolean;
+  accessibilityPolicyUrl?: string;
+  requiresLegalDocumentation?: boolean;
+  complianceDocuments?: string[];
+  existingAudits?: boolean;
   previousAuditResults?: string;
+
+  // Communication & Preferences
+  communicationPreference?: 'email' | 'phone' | 'slack' | 'teams';
+  reportingFrequency?: 'weekly' | 'bi-weekly' | 'monthly' | 'quarterly';
+  pointOfContact?: string;
+  timeZone: string;
+  preferredMeetingTimes?: string[];
+  communicationSettings?: string[];
+
+  // Policy Status
+  policyStatus?:
+    | 'none'
+    | 'has_policy'
+    | 'needs_review'
+    | 'needs_creation'
+    | 'in_progress'
+    | 'completed';
+  policyNotes?: string;
+
+  // Review & Finalize
+  status: 'active' | 'inactive' | 'pending' | 'suspended';
   notes?: string;
-  // Required billing fields
-  billingAmount: number;
-  billingFrequency: 'monthly' | 'quarterly' | 'yearly';
-  billingStartDate: Date;
+  agreedToTerms: boolean;
 }
 
 export interface ClientFormData extends CreateClientInput {

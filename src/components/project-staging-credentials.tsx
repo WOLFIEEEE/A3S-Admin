@@ -31,7 +31,6 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 
 interface StagingCredentials {
@@ -159,7 +158,6 @@ export function ProjectStagingCredentials({
         throw new Error(result.error || 'Creation failed');
       }
     } catch (error) {
-      console.error('Create error:', error);
       toast.error(error instanceof Error ? error.message : 'Creation failed');
     } finally {
       setIsSubmitting(false);
@@ -204,7 +202,6 @@ export function ProjectStagingCredentials({
         throw new Error(result.error || 'Update failed');
       }
     } catch (error) {
-      console.error('Update error:', error);
       toast.error(error instanceof Error ? error.message : 'Update failed');
     } finally {
       setIsSubmitting(false);
@@ -231,7 +228,6 @@ export function ProjectStagingCredentials({
       toast.success('Staging credentials deleted successfully');
       onCredentialsUpdated?.();
     } catch (error) {
-      console.error('Delete error:', error);
       toast.error('Failed to delete credentials');
     }
   };

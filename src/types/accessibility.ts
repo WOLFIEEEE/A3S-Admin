@@ -14,7 +14,7 @@ export interface AccessibilityIssue {
     | 'browser_zoom'
     | 'other';
   severity: '1_critical' | '2_high' | '3_medium' | '4_low';
-  conformanceLevel: 'level_a' | 'level_aa' | 'level_aaa';
+  conformanceLevel: 'level_a' | 'level_aa' | 'level_AA';
   failedWcagCriteria: string[];
   devStatus:
     | 'not_started'
@@ -55,6 +55,11 @@ export interface AccessibilityIssue {
   retestingRequired: boolean;
   testingMonth: string | null;
   testingYear: number | null;
+  // Report tracking fields
+  sentToUser: boolean;
+  sentDate: Date | null;
+  sentMonth: string | null;
+  reportId: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -73,7 +78,7 @@ export interface NewAccessibilityIssue {
     | 'browser_zoom'
     | 'other';
   severity: '1_critical' | '2_high' | '3_medium' | '4_low';
-  conformanceLevel: 'level_a' | 'level_aa' | 'level_aaa';
+  conformanceLevel: 'level_a' | 'level_aa' | 'level_AA';
   failedWcagCriteria?: string[];
   devStatus?:
     | 'not_started'
@@ -113,6 +118,11 @@ export interface NewAccessibilityIssue {
   retestingRequired?: boolean;
   testingMonth?: string | null;
   testingYear?: number | null;
+  // Report tracking fields
+  sentToUser?: boolean;
+  sentDate?: Date | null;
+  sentMonth?: string | null;
+  reportId?: string | null;
 }
 
 export interface TestUrl {

@@ -162,7 +162,6 @@ export default function IssueDetailView({ issue }: IssueDetailViewProps) {
       window.location.reload();
     } catch (error) {
       toast.error('Failed to update issue status');
-      console.error('Error updating status:', error);
     } finally {
       setIsUpdating(false);
     }
@@ -199,7 +198,6 @@ export default function IssueDetailView({ issue }: IssueDetailViewProps) {
       window.location.reload();
     } catch (error) {
       toast.error('Failed to add comment');
-      console.error('Error adding comment:', error);
     } finally {
       setIsAddingComment(false);
     }

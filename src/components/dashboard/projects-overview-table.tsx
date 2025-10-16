@@ -17,7 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { DataTable, FilterConfig } from '@/components/ui/data-table';
+import { DataTable } from '@/components/ui/data-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 
@@ -65,18 +65,7 @@ const statusColors = {
     'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
 };
 
-const priorityColors = {
-  low: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
-  medium: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-  high: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
-  urgent: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-};
-
-const wcagLevelColors = {
-  A: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-  AA: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-  AAA: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
-};
+// Removed unused color constants - priorityColors and wcagLevelColors
 
 export const columns: ColumnDef<ProjectWithDetails>[] = [
   {
@@ -114,21 +103,22 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
     cell: ({ row }) => {
       const project = row.original;
       return (
-        <div className='flex flex-col'>
+        <div className='flex max-w-[200px] flex-col'>
           <Link
             href={`/dashboard/projects/${project.id}`}
-            className='font-medium hover:underline'
+            className='truncate font-medium hover:underline'
           >
             {project.name}
           </Link>
           {project.description && (
-            <p className='text-muted-foreground line-clamp-1 text-sm'>
+            <p className='text-muted-foreground mt-1 line-clamp-1 text-sm'>
               {project.description}
             </p>
           )}
         </div>
       );
-    }
+    },
+    size: 200
   },
   {
     accessorKey: 'client',
@@ -139,7 +129,7 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
         return <span className='text-muted-foreground'>No client</span>;
 
       return (
-        <div className='flex items-center space-x-2'>
+        <div className='flex max-w-[140px] items-center space-x-2'>
           <Avatar className='h-8 w-8'>
             <AvatarImage src={`https://avatar.vercel.sh/${client.email}`} />
             <AvatarFallback>
@@ -150,15 +140,16 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
                 .toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className='flex flex-col'>
-            <span className='font-medium'>{client.name}</span>
-            <span className='text-muted-foreground text-sm'>
+          <div className='flex min-w-0 flex-col'>
+            <span className='truncate font-medium'>{client.name}</span>
+            <span className='text-muted-foreground truncate text-sm'>
               {client.company}
             </span>
           </div>
         </div>
       );
-    }
+    },
+    size: 140
   },
   {
     accessorKey: 'status',
@@ -170,36 +161,39 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
           {status.replace('_', ' ').toUpperCase()}
         </Badge>
       );
-    }
+    },
+    size: 100
   },
-  {
-    accessorKey: 'priority',
-    header: 'Priority',
-    cell: ({ row }) => {
-      const priority = row.getValue('priority') as string;
-      return (
-        <Badge
-          className={priorityColors[priority as keyof typeof priorityColors]}
-        >
-          {priority.toUpperCase()}
-        </Badge>
-      );
-    }
-  },
-  {
-    accessorKey: 'wcagLevel',
-    header: 'WCAG Level',
-    cell: ({ row }) => {
-      const level = row.getValue('wcagLevel') as string;
-      return (
-        <Badge
-          className={wcagLevelColors[level as keyof typeof wcagLevelColors]}
-        >
-          {level}
-        </Badge>
-      );
-    }
-  },
+  //   {
+  //     accessorKey: 'priority',
+  //     header: 'Priority',
+  //     cell: ({ row }) => {
+  //       const priority = row.getValue('priority') as string;
+  //       return (
+  //         <Badge
+  //           className={priorityColors[priority as keyof typeof priorityColors]}
+  //         >
+  //           {priority.toUpperCase()}
+  //         </Badge>
+  //       );
+  //     },
+  //     size: 90,
+  //   },
+  //   {
+  //     accessorKey: 'wcagLevel',
+  //     header: 'WCAG Level',
+  //     cell: ({ row }) => {
+  //       const level = row.getValue('wcagLevel') as string;
+  //       return (
+  //         <Badge
+  //           className={wcagLevelColors[level as keyof typeof wcagLevelColors]}
+  //         >
+  //           {level}
+  //         </Badge>
+  //       );
+  //     },
+  //     size: 90,
+  //   },
   {
     accessorKey: 'progress',
     header: 'Progress',
@@ -207,11 +201,12 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
       const progress = row.getValue('progress') as number;
       return (
         <div className='flex items-center space-x-2'>
-          <Progress value={progress} className='w-[60px]' />
+          <Progress value={progress} className='w-[50px]' />
           <span className='text-sm font-medium'>{progress}%</span>
         </div>
       );
-    }
+    },
+    size: 100
   },
   {
     accessorKey: 'issueCount',
@@ -239,7 +234,8 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
           )}
         </div>
       );
-    }
+    },
+    size: 110
   },
   {
     accessorKey: 'budget',
@@ -271,7 +267,8 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
           </span>
         </div>
       );
-    }
+    },
+    size: 110
   },
   {
     accessorKey: 'startDate',
@@ -289,7 +286,8 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
           )}
         </div>
       );
-    }
+    },
+    size: 130
   },
   {
     accessorKey: 'teamSize',
@@ -304,7 +302,8 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
           </span>
         </div>
       );
-    }
+    },
+    size: 100
   },
   {
     accessorKey: 'lastActivity',
@@ -317,11 +316,13 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
       return (
         <span className='text-sm'>{format(lastActivity, 'MMM dd, yyyy')}</span>
       );
-    }
+    },
+    size: 110
   },
   {
     id: 'actions',
     enableHiding: false,
+    size: 60,
     cell: ({ row }) => {
       const project = row.original;
 
@@ -365,72 +366,21 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
   }
 ];
 
-const filters: FilterConfig[] = [
-  {
-    key: 'status',
-    label: 'Status',
-    type: 'select',
-    placeholder: 'All Statuses',
-    options: [
-      { label: 'Planning', value: 'planning' },
-      { label: 'Active', value: 'active' },
-      { label: 'On Hold', value: 'on_hold' },
-      { label: 'Completed', value: 'completed' },
-      { label: 'Cancelled', value: 'cancelled' },
-      { label: 'Archived', value: 'archived' }
-    ]
-  },
-  {
-    key: 'priority',
-    label: 'Priority',
-    type: 'select',
-    placeholder: 'All Priorities',
-    options: [
-      { label: 'Low', value: 'low' },
-      { label: 'Medium', value: 'medium' },
-      { label: 'High', value: 'high' },
-      { label: 'Urgent', value: 'urgent' }
-    ]
-  },
-  {
-    key: 'wcagLevel',
-    label: 'WCAG Level',
-    type: 'select',
-    placeholder: 'All Levels',
-    options: [
-      { label: 'Level A', value: 'A' },
-      { label: 'Level AA', value: 'AA' },
-      { label: 'Level AAA', value: 'AAA' }
-    ]
-  },
-  {
-    key: 'billingType',
-    label: 'Billing Type',
-    type: 'select',
-    placeholder: 'All Types',
-    options: [
-      { label: 'Hourly', value: 'hourly' },
-      { label: 'Fixed', value: 'fixed' },
-      { label: 'Milestone', value: 'milestone' }
-    ]
-  }
-];
+// Temporarily removed filters until advanced DataTable is implemented
 
 interface ProjectsOverviewTableProps {
   data: ProjectWithDetails[];
 }
 
-export function ProjectsOverviewTable({ data }: ProjectsOverviewTableProps) {
+export function ProjectsOverviewTable({
+  data = []
+}: ProjectsOverviewTableProps) {
+  // Ensure data is always an array
+  const safeData = Array.isArray(data) ? data : [];
+
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      searchKey='name'
-      searchPlaceholder='Search projects...'
-      filters={filters}
-      enableExport={true}
-      title='Projects Overview'
-      description='Comprehensive view of all projects with advanced filtering and management capabilities'
-    />
+    <div className='w-full'>
+      <DataTable columns={columns} data={safeData} />
+    </div>
   );
 }

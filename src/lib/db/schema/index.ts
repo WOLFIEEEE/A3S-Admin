@@ -3,6 +3,8 @@ export * from './clients';
 export * from './projects';
 export * from './tickets';
 export * from './accessibility';
+export * from './reports';
+export * from './teams';
 
 // Re-export commonly used types
 export type {
@@ -75,3 +77,27 @@ export {
   accessibilityIssuesRelations,
   issueCommentsRelations
 } from './accessibility';
+
+export {
+  reportsRelations,
+  reportIssuesRelations,
+  reportCommentsRelations
+} from './reports';
+
+export type {
+  Team,
+  NewTeam,
+  TeamMember,
+  NewTeamMember,
+  ProjectTeamAssignment,
+  NewProjectTeamAssignment,
+  TeamWithMembers,
+  TeamMemberWithRelations,
+  OrganizationNode
+} from './teams';
+
+export {
+  teamsRelations,
+  teamMembersRelations,
+  projectTeamAssignmentsRelations
+} from './teams';

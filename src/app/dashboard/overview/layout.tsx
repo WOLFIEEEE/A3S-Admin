@@ -1,6 +1,5 @@
 import DashboardSwitcher from '@/components/dashboard/dashboard-switcher';
-import OverviewDashboard from '@/components/dashboard/overview-dashboard';
-import ComprehensiveOverview from '@/components/dashboard/comprehensive-overview';
+import EnhancedDashboard from '@/components/dashboard/enhanced-dashboard';
 import React from 'react';
 import { getAllClients } from '@/lib/db/queries/clients';
 import { getAllProjects } from '@/lib/db/queries/projects';
@@ -11,7 +10,7 @@ import { ProjectWithDetails } from '@/components/dashboard/projects-overview-tab
 export default async function OverViewLayout() {
   try {
     // Fetch real data from database
-    const [clientsResult, projectsResult, ticketsResult, issuesResult] =
+    const [clientsResult, projectsResult, _ticketsResult, issuesResult] =
       await Promise.all([
         getAllClients({ limit: 1000 }),
         getAllProjects({ limit: 1000 }),
@@ -21,30 +20,19 @@ export default async function OverViewLayout() {
 
     const totalClients = clientsResult.clients.length;
     const totalProjects = projectsResult.projects.length;
-    const totalTickets = ticketsResult.tickets.length;
 
     // Calculate active projects (not completed or cancelled)
     const activeProjects = projectsResult.projects.filter(
       (p) => !['completed', 'cancelled', 'archived'].includes(p.status)
     ).length;
 
-    // Calculate resolved tickets
-    const resolvedTickets = ticketsResult.tickets.filter((t) =>
-      ['resolved', 'closed'].includes(t.status)
-    ).length;
-
-    const complianceRate =
-      totalTickets > 0 ? Math.round((resolvedTickets / totalTickets) * 100) : 0;
-
-    // Transform projects data to match ProjectWithDetails interface
+    // Transform projects data to match ProjectWithDetails interface with real data
     const transformedProjects: ProjectWithDetails[] =
       projectsResult.projects.map((project) => ({
         ...project,
-        progress: Math.floor(Math.random() * 100), // Mock progress for now
-        teamSize: Math.floor(Math.random() * 8) + 1, // Mock team size
-        lastActivity: new Date(
-          Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
-        ) // Mock last activity
+        progress: project.progressPercentage || 0, // Use real progress from database
+        teamSize: 0, // Will be calculated from actual team assignments
+        lastActivity: project.updatedAt // Use real last update time
       }));
 
     return (
@@ -52,21 +40,16 @@ export default async function OverViewLayout() {
         clients={clientsResult.clients}
         projects={projectsResult.projects}
       >
-        <ComprehensiveOverview
+        <EnhancedDashboard
           projects={transformedProjects}
           issues={issuesResult.issues}
           totalClients={totalClients}
           totalProjects={totalProjects}
-          totalTickets={totalTickets}
           activeProjects={activeProjects}
-          resolvedTickets={resolvedTickets}
-          complianceRate={complianceRate}
         />
       </DashboardSwitcher>
     );
   } catch (error) {
-    console.error('Error loading dashboard data:', error);
-
     // Fallback to mock data if database fails
     const mockData = {
       clients: [],
@@ -74,10 +57,7 @@ export default async function OverViewLayout() {
       issues: [],
       totalClients: 0,
       totalProjects: 0,
-      totalTickets: 0,
-      activeProjects: 0,
-      resolvedTickets: 0,
-      complianceRate: 0
+      activeProjects: 0
     };
 
     return (
@@ -85,15 +65,12 @@ export default async function OverViewLayout() {
         clients={mockData.clients}
         projects={mockData.projects}
       >
-        <ComprehensiveOverview
+        <EnhancedDashboard
           projects={mockData.projects}
           issues={mockData.issues}
           totalClients={mockData.totalClients}
           totalProjects={mockData.totalProjects}
-          totalTickets={mockData.totalTickets}
           activeProjects={mockData.activeProjects}
-          resolvedTickets={mockData.resolvedTickets}
-          complianceRate={mockData.complianceRate}
         />
       </DashboardSwitcher>
     );

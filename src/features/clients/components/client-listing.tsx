@@ -2,13 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +20,6 @@ import {
   IconMail,
   IconPhone,
   IconCalendar,
-  IconCurrencyDollar,
   IconEye,
   IconEdit,
   IconTrash
@@ -108,7 +101,7 @@ export default function ClientListing({
     return filtered;
   }, [clients, searchQuery, statusFilter, sortBy, sortOrder]);
 
-  const formatCurrency = (amount: number | string) => {
+  const _formatCurrency = (amount: number | string) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
@@ -130,7 +123,6 @@ export default function ClientListing({
         day: 'numeric'
       }).format(dateObj);
     } catch (error) {
-      console.error('Date formatting error:', error);
       return 'Invalid Date';
     }
   };
@@ -157,7 +149,6 @@ export default function ClientListing({
         onClientDeleted(clientId);
       }
     } catch (error) {
-      console.error('Error deleting client:', error);
       alert('Failed to delete client. Please try again.');
     }
   };

@@ -34,7 +34,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { DataTable, FilterConfig } from '@/components/ui/data-table';
+import { DataTable } from '@/components/ui/data-table';
 import { IssueWithRelations } from '@/lib/db/queries/issues';
 
 const severityColors = {
@@ -281,8 +281,8 @@ export const columns: ColumnDef<IssueWithRelations>[] = [
       }
       return (
         <div className='flex flex-wrap gap-1'>
-          {criteria.slice(0, 2).map((criterion, index) => (
-            <Badge key={index} variant='outline' className='text-xs'>
+          {criteria.slice(0, 2).map((criterion, _index) => (
+            <Badge key={_index} variant='outline' className='text-xs'>
               {criterion}
             </Badge>
           ))}
@@ -402,84 +402,7 @@ export const columns: ColumnDef<IssueWithRelations>[] = [
   }
 ];
 
-const filters: FilterConfig[] = [
-  {
-    key: 'severity',
-    label: 'Severity',
-    type: 'select',
-    placeholder: 'All Severities',
-    options: [
-      { label: 'Critical', value: '1_critical' },
-      { label: 'High', value: '2_high' },
-      { label: 'Medium', value: '3_medium' },
-      { label: 'Low', value: '4_low' }
-    ]
-  },
-  {
-    key: 'issueType',
-    label: 'Issue Type',
-    type: 'select',
-    placeholder: 'All Types',
-    options: [
-      { label: 'Keyboard Navigation', value: 'keyboard_navigation' },
-      { label: 'Screen Reader', value: 'screen_reader' },
-      { label: 'Color Contrast', value: 'color_contrast' },
-      { label: 'Automated Tools', value: 'automated_tools' },
-      { label: 'Text Spacing', value: 'text_spacing' },
-      { label: 'Browser Zoom', value: 'browser_zoom' },
-      { label: 'Other', value: 'other' }
-    ]
-  },
-  {
-    key: 'devStatus',
-    label: 'Dev Status',
-    type: 'select',
-    placeholder: 'All Dev Statuses',
-    options: [
-      { label: 'Not Started', value: 'not_started' },
-      { label: 'In Progress', value: 'in_progress' },
-      { label: 'Done', value: 'done' },
-      { label: 'Blocked', value: 'blocked' },
-      { label: '3rd Party', value: '3rd_party' },
-      { label: "Won't Fix", value: 'wont_fix' }
-    ]
-  },
-  {
-    key: 'qaStatus',
-    label: 'QA Status',
-    type: 'select',
-    placeholder: 'All QA Statuses',
-    options: [
-      { label: 'Not Started', value: 'not_started' },
-      { label: 'In Progress', value: 'in_progress' },
-      { label: 'Fixed', value: 'fixed' },
-      { label: 'Verified', value: 'verified' },
-      { label: 'Failed', value: 'failed' },
-      { label: '3rd Party', value: '3rd_party' }
-    ]
-  },
-  {
-    key: 'conformanceLevel',
-    label: 'WCAG Level',
-    type: 'select',
-    placeholder: 'All Levels',
-    options: [
-      { label: 'Level A', value: 'A' },
-      { label: 'Level AA', value: 'AA' },
-      { label: 'Level AAA', value: 'AAA' }
-    ]
-  },
-  {
-    key: 'isDuplicate',
-    label: 'Duplicate Status',
-    type: 'select',
-    placeholder: 'All Issues',
-    options: [
-      { label: 'Original Issues', value: 'false' },
-      { label: 'Duplicate Issues', value: 'true' }
-    ]
-  }
-];
+// Removed FilterConfig usage - simplified table without advanced filtering
 
 interface Project {
   id: string;
@@ -635,16 +558,7 @@ export function EnhancedIssuesTable({
       )}
 
       {/* Issues Table - Let DataTable handle its own scrolling */}
-      <DataTable
-        columns={columns}
-        data={filteredData}
-        searchKey='issueTitle'
-        searchPlaceholder='Search issues...'
-        filters={filters}
-        enableExport={true}
-        title='Accessibility Issues'
-        description='Comprehensive view of all accessibility issues with advanced filtering and tracking'
-      />
+      <DataTable columns={columns} data={filteredData} />
     </div>
   );
 }

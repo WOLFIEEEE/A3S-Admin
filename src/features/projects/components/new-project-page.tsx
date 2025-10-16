@@ -2,13 +2,16 @@
 
 import { useRouter } from 'next/navigation';
 import { CreateProjectInput } from '@/types';
-import ProjectFormEnhanced from './project-form-enhanced';
+import EnhancedProjectForm from './enhanced-project-form';
 import { toast } from 'sonner';
 
 export default function NewProjectPage() {
   const router = useRouter();
 
-  const handleCreateProject = async (data: CreateProjectInput) => {
+  const handleCreateProject = async (
+    data: CreateProjectInput,
+    documents: any[] = []
+  ) => {
     try {
       const response = await fetch('/api/projects', {
         method: 'POST',
@@ -32,7 +35,6 @@ export default function NewProjectPage() {
         `/dashboard/clients/${result.data.clientId}/projects/${result.data.id}`
       );
     } catch (error) {
-      console.error('Error creating project:', error);
       toast.error(
         error instanceof Error ? error.message : 'Failed to create project'
       );
@@ -45,7 +47,7 @@ export default function NewProjectPage() {
   };
 
   return (
-    <ProjectFormEnhanced
+    <EnhancedProjectForm
       onSubmit={handleCreateProject}
       onCancel={handleCancel}
     />

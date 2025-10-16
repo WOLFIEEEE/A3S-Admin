@@ -2,29 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import {
   IconTicket,
   IconEdit,
-  IconTrash,
   IconPlus,
   IconFileText,
-  IconUsers,
-  IconClock,
-  IconAlertTriangle,
-  IconCheck,
-  IconActivity,
   IconAccessible,
   IconMessage,
   IconBuilding,
@@ -142,7 +129,6 @@ export default function TicketDetailView({ ticketId }: TicketDetailViewProps) {
         setComments([]);
         setAttachments([]);
       } catch (error) {
-        console.error('Error loading ticket data:', error);
         toast.error('Failed to load ticket data');
       } finally {
         setIsLoading(false);
@@ -161,7 +147,6 @@ export default function TicketDetailView({ ticketId }: TicketDetailViewProps) {
       toast.success('Comment added successfully!');
       setNewComment('');
     } catch (error) {
-      console.error('Error adding comment:', error);
       toast.error('Failed to add comment');
     } finally {
       setIsAddingComment(false);
@@ -297,8 +282,8 @@ export default function TicketDetailView({ ticketId }: TicketDetailViewProps) {
               </CardHeader>
               <CardContent>
                 <div className='flex flex-wrap gap-2'>
-                  {ticket.wcagCriteria.map((criteria, index) => (
-                    <Badge key={index} variant='outline' className='text-xs'>
+                  {ticket.wcagCriteria.map((criteria, _index) => (
+                    <Badge key={_index} variant='outline' className='text-xs'>
                       {criteria}
                     </Badge>
                   ))}
@@ -315,8 +300,8 @@ export default function TicketDetailView({ ticketId }: TicketDetailViewProps) {
               </CardHeader>
               <CardContent>
                 <div className='flex flex-wrap gap-2'>
-                  {ticket.tags.map((tag, index) => (
-                    <Badge key={index} variant='secondary' className='text-xs'>
+                  {ticket.tags.map((tag, _index) => (
+                    <Badge key={_index} variant='secondary' className='text-xs'>
                       {tag}
                     </Badge>
                   ))}

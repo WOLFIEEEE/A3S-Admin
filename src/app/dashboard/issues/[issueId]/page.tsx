@@ -38,7 +38,6 @@ async function fetchIssue(
 
     return response.json();
   } catch (error) {
-    console.error('Error fetching issue:', error);
     return null;
   }
 }
@@ -51,7 +50,7 @@ export default async function IssueDetailPage({
 
   if (!issue) {
     return (
-      <PageContainer scrollable={true}>
+      <PageContainer>
         <div className='w-full py-12 text-center'>
           <h2 className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
             Issue Not Found
@@ -65,7 +64,7 @@ export default async function IssueDetailPage({
   }
 
   return (
-    <PageContainer scrollable={true}>
+    <PageContainer>
       <div className='w-full space-y-6'>
         {/* Breadcrumb Navigation */}
         <Breadcrumb>

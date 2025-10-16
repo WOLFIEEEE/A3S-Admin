@@ -53,7 +53,6 @@ export async function GET(
       data: credentials
     });
   } catch (error) {
-    console.error('Error fetching staging credentials:', error);
     return NextResponse.json(
       {
         success: false,
@@ -124,8 +123,6 @@ export async function PUT(
       message: 'Staging credentials updated successfully'
     });
   } catch (error) {
-    console.error('Error updating staging credentials:', error);
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
@@ -196,7 +193,6 @@ export async function DELETE(
       message: 'Staging credentials deleted successfully'
     });
   } catch (error) {
-    console.error('Error deleting staging credentials:', error);
     return NextResponse.json(
       {
         success: false,

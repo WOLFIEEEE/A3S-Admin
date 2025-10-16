@@ -77,7 +77,7 @@ export function PieGraph() {
           <PieChart>
             <defs>
               {['chrome', 'safari', 'firefox', 'edge', 'other'].map(
-                (browser, index) => (
+                (browser, _index) => (
                   <linearGradient
                     key={browser}
                     id={`fill${browser}`}
@@ -89,12 +89,12 @@ export function PieGraph() {
                     <stop
                       offset='0%'
                       stopColor='var(--primary)'
-                      stopOpacity={1 - index * 0.15}
+                      stopOpacity={1 - _index * 0.15}
                     />
                     <stop
                       offset='100%'
                       stopColor='var(--primary)'
-                      stopOpacity={0.8 - index * 0.15}
+                      stopOpacity={0.8 - _index * 0.15}
                     />
                   </linearGradient>
                 )

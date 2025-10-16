@@ -35,8 +35,6 @@ function mockEncrypt(data: string): string {
 
 // Clear existing data
 async function clearDatabase() {
-  console.log('🗑️  Clearing existing data...');
-
   try {
     // Delete in reverse order of dependencies
     await db.delete(ticketAttachments);
@@ -52,19 +50,11 @@ async function clearDatabase() {
     await db.delete(clientCredentials);
     await db.delete(clientFiles);
     await db.delete(clients);
-
-    console.log('✅ Database cleared');
-  } catch (error) {
-    console.log(
-      '⚠️  Some tables may not exist yet, continuing with seeding...'
-    );
-  }
+  } catch (error) {}
 }
 
 // Seed clients
 async function seedClients() {
-  console.log('👥 Seeding clients...');
-
   const clientData = [
     {
       name: 'Sarah Johnson',
@@ -149,7 +139,7 @@ async function seedClients() {
       pricingTier: 'enterprise' as const,
       paymentMethod: 'wire' as const,
       servicesNeeded: ['audit', 'remediation', 'training', 'consultation'],
-      wcagLevel: 'AAA' as const,
+      wcagLevel: 'AA' as const,
       priorityAreas: [
         'patient portals',
         'medical forms',
@@ -246,14 +236,11 @@ async function seedClients() {
     .insert(clients)
     .values(clientData)
     .returning();
-  console.log(`✅ Seeded ${insertedClients.length} clients`);
   return insertedClients;
 }
 
 // Seed client files
 async function seedClientFiles(clientIds: string[]) {
-  console.log('📁 Seeding client files...');
-
   try {
     const fileData = clientIds.flatMap((clientId) => [
       {
@@ -287,16 +274,11 @@ async function seedClientFiles(clientIds: string[]) {
     ]);
 
     await db.insert(clientFiles).values(fileData);
-    console.log(`✅ Seeded ${fileData.length} client files`);
-  } catch (error) {
-    console.log('⚠️  Skipping client files seeding (table may not exist)');
-  }
+  } catch (error) {}
 }
 
 // Seed client credentials
 async function seedClientCredentials(clientIds: string[]) {
-  console.log('🔐 Seeding client credentials...');
-
   const credentialData = clientIds.flatMap((clientId) => [
     {
       clientId,
@@ -318,13 +300,10 @@ async function seedClientCredentials(clientIds: string[]) {
   ]);
 
   await db.insert(clientCredentials).values(credentialData);
-  console.log(`✅ Seeded ${credentialData.length} client credentials`);
 }
 
 // Seed projects
 async function seedProjects(clientIds: string[]) {
-  console.log('🚀 Seeding projects...');
-
   const projectData = [
     {
       clientId: clientIds[0], // TechCorp Solutions
@@ -406,10 +385,10 @@ async function seedProjects(clientIds: string[]) {
         "Comprehensive accessibility audit and remediation of HealthCare First's patient portal system. Critical for ADA compliance and patient access to medical information.",
       status: 'active' as const,
       priority: 'urgent' as const,
-      wcagLevel: 'AAA' as const,
+      wcagLevel: 'AA' as const,
       projectType: 'full_compliance' as const,
       complianceRequirements: [
-        'WCAG 2.2 AAA',
+        'WCAG 2.2 AA',
         'Section 508',
         'ADA',
         'HIPAA compliance'
@@ -426,11 +405,11 @@ async function seedProjects(clientIds: string[]) {
         'Staff training'
       ],
       acceptanceCriteria: [
-        'AAA compliance achieved',
+        'AA compliance achieved',
         'HIPAA compliance maintained',
         'Staff trained'
       ],
-      tags: ['healthcare', 'patient-portal', 'aaa-compliance'],
+      tags: ['healthcare', 'patient-portal', 'AA-compliance'],
       notes: 'Critical healthcare accessibility project',
       createdBy: 'admin@a3s.com',
       lastModifiedBy: 'admin@a3s.com'
@@ -505,14 +484,11 @@ async function seedProjects(clientIds: string[]) {
     .insert(projects)
     .values(projectData)
     .returning();
-  console.log(`✅ Seeded ${insertedProjects.length} projects`);
   return insertedProjects;
 }
 
 // Seed project milestones
 async function seedProjectMilestones(projectIds: string[]) {
-  console.log('🎯 Seeding project milestones...');
-
   const milestoneData = projectIds.flatMap((projectId, index) => {
     const baseDate = new Date('2024-01-01');
     const projectStart = new Date(
@@ -587,13 +563,10 @@ async function seedProjectMilestones(projectIds: string[]) {
   });
 
   await db.insert(projectMilestones).values(milestoneData);
-  console.log(`✅ Seeded ${milestoneData.length} project milestones`);
 }
 
 // Seed project developers
 async function seedProjectDevelopers(projectIds: string[]) {
-  console.log('👨‍💻 Seeding project developers...');
-
   const developerData = projectIds.flatMap((projectId) => [
     {
       projectId,
@@ -637,20 +610,17 @@ async function seedProjectDevelopers(projectIds: string[]) {
   ]);
 
   await db.insert(projectDevelopers).values(developerData);
-  console.log(`✅ Seeded ${developerData.length} project developers`);
 }
 
 // Seed project time entries
 async function seedProjectTimeEntries(projectIds: string[]) {
-  console.log('⏰ Seeding project time entries...');
-
   const timeEntryData = projectIds.flatMap((projectId) => {
     const entries = [];
     const startDate = new Date('2024-01-01');
 
     // Generate 20 time entries per project
     for (let i = 0; i < 20; i++) {
-      const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+      const _date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
       const hours = Math.random() * 8 + 1; // 1-9 hours
       const categories = [
         'development',
@@ -667,14 +637,14 @@ async function seedProjectTimeEntries(projectIds: string[]) {
       entries.push({
         projectId,
         developerId: `dev-00${(i % 3) + 1}`,
-        date,
+        date: _date,
         hours: hours.toFixed(2),
         description: `Work on ${category} tasks for project milestone`,
         category,
         billable: Math.random() > 0.1, // 90% billable
         approved: Math.random() > 0.3, // 70% approved
         approvedBy: Math.random() > 0.3 ? 'manager@a3s.com' : null,
-        approvedAt: Math.random() > 0.3 ? date : null
+        approvedAt: Math.random() > 0.3 ? _date : null
       });
     }
 
@@ -682,13 +652,10 @@ async function seedProjectTimeEntries(projectIds: string[]) {
   });
 
   await db.insert(projectTimeEntries).values(timeEntryData);
-  console.log(`✅ Seeded ${timeEntryData.length} project time entries`);
 }
 
 // Seed project documents
 async function seedProjectDocuments(projectIds: string[]) {
-  console.log('📄 Seeding project documents...');
-
   const documentData = projectIds.flatMap((projectId) => [
     {
       projectId,
@@ -730,20 +697,17 @@ async function seedProjectDocuments(projectIds: string[]) {
   ]);
 
   await db.insert(projectDocuments).values(documentData);
-  console.log(`✅ Seeded ${documentData.length} project documents`);
 }
 
 // Seed project activities
 async function seedProjectActivities(projectIds: string[]) {
-  console.log('📊 Seeding project activities...');
-
   const activityData = projectIds.flatMap((projectId) => {
     const activities = [];
     const startDate = new Date('2024-01-01');
 
     // Generate 15 activities per project
     for (let i = 0; i < 15; i++) {
-      const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+      const _date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
       const actions = [
         'created',
         'updated',
@@ -762,10 +726,10 @@ async function seedProjectActivities(projectIds: string[]) {
         action,
         description: `Project ${action} - ${action.replace('_', ' ')} action performed`,
         metadata: JSON.stringify({
-          timestamp: date.toISOString(),
+          timestamp: _date.toISOString(),
           actionId: `act-${i}`
         }),
-        timestamp: date
+        timestamp: _date
       });
     }
 
@@ -773,13 +737,10 @@ async function seedProjectActivities(projectIds: string[]) {
   });
 
   await db.insert(projectActivities).values(activityData);
-  console.log(`✅ Seeded ${activityData.length} project activities`);
 }
 
 // Seed project staging credentials
 async function seedProjectStagingCredentials(projectIds: string[]) {
-  console.log('🔑 Seeding project staging credentials...');
-
   const credentialData = projectIds.flatMap((projectId) => [
     {
       projectId,
@@ -807,20 +768,17 @@ async function seedProjectStagingCredentials(projectIds: string[]) {
   ]);
 
   await db.insert(projectStagingCredentials).values(credentialData);
-  console.log(`✅ Seeded ${credentialData.length} project staging credentials`);
 }
 
 // Seed tickets
 async function seedTickets(projectIds: string[]) {
-  console.log('🎫 Seeding tickets...');
-
   const ticketData = projectIds.flatMap((projectId) => {
     const tickets = [];
     const startDate = new Date('2024-01-01');
 
     // Generate 10 tickets per project
     for (let i = 0; i < 10; i++) {
-      const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+      const _date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
       const statuses = ['open', 'in_progress', 'resolved', 'closed'];
       const priorities = ['low', 'medium', 'high', 'critical'];
       const types = ['bug', 'feature', 'task', 'accessibility', 'improvement'];
@@ -847,9 +805,9 @@ async function seedTickets(projectIds: string[]) {
           status === 'closed' ? Math.floor(Math.random() * 20) + 1 : 0,
         wcagCriteria: ['1.1.1', '1.3.1', '2.1.1'],
         tags: [type, priority, 'sample'],
-        dueDate: new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000),
-        resolvedAt: status === 'resolved' || status === 'closed' ? date : null,
-        closedAt: status === 'closed' ? date : null
+        dueDate: new Date(_date.getTime() + 7 * 24 * 60 * 60 * 1000),
+        resolvedAt: status === 'resolved' || status === 'closed' ? _date : null,
+        closedAt: status === 'closed' ? _date : null
       });
     }
 
@@ -860,21 +818,18 @@ async function seedTickets(projectIds: string[]) {
     .insert(tickets)
     .values(ticketData)
     .returning();
-  console.log(`✅ Seeded ${insertedTickets.length} tickets`);
   return insertedTickets;
 }
 
 // Seed ticket comments
 async function seedTicketComments(ticketIds: string[]) {
-  console.log('💬 Seeding ticket comments...');
-
   const commentData = ticketIds.flatMap((ticketId) => {
     const comments = [];
     const startDate = new Date('2024-01-01');
 
     // Generate 3 comments per ticket
     for (let i = 0; i < 3; i++) {
-      const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+      const _date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
 
       comments.push({
         ticketId,
@@ -889,13 +844,10 @@ async function seedTicketComments(ticketIds: string[]) {
   });
 
   await db.insert(ticketComments).values(commentData);
-  console.log(`✅ Seeded ${commentData.length} ticket comments`);
 }
 
 // Seed ticket attachments
 async function seedTicketAttachments(ticketIds: string[]) {
-  console.log('📎 Seeding ticket attachments...');
-
   const attachmentData = ticketIds.flatMap((ticketId) => [
     {
       ticketId,
@@ -909,14 +861,11 @@ async function seedTicketAttachments(ticketIds: string[]) {
   ]);
 
   await db.insert(ticketAttachments).values(attachmentData);
-  console.log(`✅ Seeded ${attachmentData.length} ticket attachments`);
 }
 
 // Main seed function
 export async function seed() {
   try {
-    console.log('🌱 Starting database seeding...');
-
     // Clear existing data
     await clearDatabase();
 
@@ -942,24 +891,7 @@ export async function seed() {
 
     await seedTicketComments(ticketIds);
     await seedTicketAttachments(ticketIds);
-
-    console.log('🎉 Database seeding completed successfully!');
-    console.log('\n📊 Summary:');
-    console.log(`   • ${clients.length} clients`);
-    console.log(`   • ${projects.length} projects`);
-    console.log(`   • ${tickets.length} tickets`);
-    console.log(`   • ${clientIds.length * 2} client files`);
-    console.log(`   • ${clientIds.length * 2} client credentials`);
-    console.log(`   • ${projectIds.length * 5} project milestones`);
-    console.log(`   • ${projectIds.length * 3} project developers`);
-    console.log(`   • ${projectIds.length * 20} project time entries`);
-    console.log(`   • ${projectIds.length * 3} project documents`);
-    console.log(`   • ${projectIds.length * 15} project activities`);
-    console.log(`   • ${projectIds.length * 2} project staging credentials`);
-    console.log(`   • ${ticketIds.length * 3} ticket comments`);
-    console.log(`   • ${ticketIds.length} ticket attachments`);
   } catch (error) {
-    console.error('❌ Database seeding failed:', error);
     throw error;
   }
 }
@@ -968,11 +900,9 @@ export async function seed() {
 if (require.main === module) {
   seed()
     .then(() => {
-      console.log('✅ Seeding completed');
       process.exit(0);
     })
     .catch((error) => {
-      console.error('❌ Seeding failed:', error);
       process.exit(1);
     });
 }

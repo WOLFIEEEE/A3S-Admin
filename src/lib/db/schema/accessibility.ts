@@ -14,6 +14,7 @@ import { relations } from 'drizzle-orm';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { projects } from './projects';
+import { reports } from './reports';
 
 // ================================
 // ACCESSIBILITY ENUMS
@@ -51,7 +52,7 @@ export const severityEnum = pgEnum('severity', [
 export const conformanceLevelEnum = pgEnum('conformance_level', [
   'A',
   'AA',
-  'AAA'
+  'AA'
 ]);
 
 // Development status enum (from Excel "Dev Status")
@@ -212,6 +213,12 @@ export const accessibilityIssues = pgTable(
     importBatchId: varchar('import_batch_id', { length: 255 }), // Groups issues from same Excel import
     sourceFileName: varchar('source_file_name', { length: 255 }), // Original Excel filename
 
+    // Report tracking - for monthly report chunks
+    sentToUser: boolean('sent_to_user').default(false), // Whether this issue was sent in a report
+    sentDate: timestamp('sent_date'), // When this issue was sent to user
+    sentMonth: varchar('sent_month', { length: 20 }), // Month when sent (e.g., "January 2024")
+    reportId: uuid('report_id'), // Reference to the report this issue was included in
+
     // Timestamps
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull()
@@ -230,6 +237,11 @@ export const accessibilityIssues = pgTable(
     importBatchIdx: index('accessibility_issues_import_batch_idx').on(
       table.importBatchId
     ),
+    // Report tracking indexes
+    sentToUserIdx: index('accessibility_issues_sent_to_user_idx').on(
+      table.sentToUser
+    ),
+    reportIdIdx: index('accessibility_issues_report_id_idx').on(table.reportId),
     // Self-reference foreign key constraint
     duplicateOfFk: index('accessibility_issues_duplicate_of_idx').on(
       table.duplicateOfId
@@ -296,7 +308,11 @@ export const accessibilityIssuesRelations = relations(
     duplicates: many(accessibilityIssues, {
       relationName: 'duplicateOf'
     }),
-    comments: many(issueComments)
+    comments: many(issueComments),
+    report: one(reports, {
+      fields: [accessibilityIssues.reportId],
+      references: [reports.id]
+    })
   })
 );
 

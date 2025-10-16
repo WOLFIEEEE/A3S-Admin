@@ -95,7 +95,7 @@ export default function TicketForm({
       description: initialData?.description || '',
       type: initialData?.type || 'task',
       priority: initialData?.priority || 'medium',
-      assigneeId: initialData?.assigneeId || '',
+      assigneeId: initialData?.assigneeId || 'unassigned',
       estimatedHours: initialData?.estimatedHours || undefined,
       tags: initialData?.tags?.join(', ') || ''
     }
@@ -109,7 +109,8 @@ export default function TicketForm({
         ...data,
         projectId,
         reporterId,
-        assigneeId: data.assigneeId || undefined,
+        assigneeId:
+          data.assigneeId === 'unassigned' ? undefined : data.assigneeId,
         estimatedHours: data.estimatedHours || undefined,
         tags: data.tags || undefined
       };
@@ -339,7 +340,7 @@ EXPECTED OUTCOME: Achieve minimum 4.5:1 contrast ratio for all navigation text'
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value=''>Unassigned</SelectItem>
+                        <SelectItem value='unassigned'>Unassigned</SelectItem>
                         <SelectItem value='auto-assign'>
                           Auto-assign based on skills
                         </SelectItem>

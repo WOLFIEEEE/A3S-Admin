@@ -1,0 +1,31 @@
+[{
+        "id": "client-1",
+        "name": "Acme Corporation",
+        "email": "contact@acme.com",
+        "company": "Acme Corp",
+        "phone": "+1234567890",
+        "billingAmount": "5000.00",
+        "billingStartDate": "2025-01-01T00:00:00Z",
+        "billingFrequency": "monthly",
+        "status": "active",
+        "clientType": "a3s",
+        "policyStatus": "has_policy",
+        "createdAt": "2025-01-01T00:00:00Z",
+        "updatedAt": "2025-01-01T00:00:00Z"
+    },
+    {
+        "id": "client-2",
+        "name": "TechStart Inc",
+        "email": "hello@techstart.io",
+        "company": "TechStart",
+        "phone": "+0987654321",
+        "billingAmount": "3000.00",
+        "billingStartDate": "2025-02-01T00:00:00Z",
+        "billingFrequency": "monthly",
+        "status": "active",
+        "clientType": "a3s",
+        "policyStatus": "none",
+        "createdAt": "2025-02-01T00:00:00Z",
+        "updatedAt": "2025-02-01T00:00:00Z"
+    }
+]

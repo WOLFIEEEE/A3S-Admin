@@ -19,12 +19,8 @@ import {
   IconClock,
   IconCurrencyDollar,
   IconFileText,
-  IconTrendingUp,
-  IconAlertTriangle,
   IconCheck,
   IconPlayerPlay,
-  IconPlayerPause,
-  IconArchive,
   IconEdit,
   IconTrash,
   IconDownload,
@@ -101,7 +97,7 @@ export default function ProjectOverview({
   ).length;
   const totalHours = projects.reduce((sum, p) => sum + (p.actualHours || 0), 0);
   const totalBudget = projects.reduce((sum, p) => sum + (p.budget || 0), 0);
-  const averageProgress =
+  const _averageProgress =
     projects.length > 0
       ? projects.reduce((sum, p) => sum + p.progressPercentage, 0) /
         projects.length
@@ -113,7 +109,7 @@ export default function ProjectOverview({
   const getProjectDevelopers = (projectId: string) =>
     developers.filter((d) => d.projectId === projectId && d.isActive);
 
-  const getProjectTimeEntries = (projectId: string) =>
+  const _getProjectTimeEntries = (projectId: string) =>
     timeEntries.filter((t) => t.projectId === projectId);
 
   const getProjectDocuments = (projectId: string) =>
@@ -431,9 +427,9 @@ export default function ProjectOverview({
                         </h4>
                         <ul className='space-y-1'>
                           {selectedProject.deliverables.map(
-                            (deliverable, index) => (
+                            (deliverable, _index) => (
                               <li
-                                key={index}
+                                key={_index}
                                 className='flex items-center gap-2 text-sm'
                               >
                                 <IconCheck className='h-3 w-3 text-green-500' />
@@ -532,9 +528,9 @@ export default function ProjectOverview({
                                     </p>
                                     <ul className='space-y-1 text-xs'>
                                       {developer.responsibilities.map(
-                                        (resp, index) => (
+                                        (resp, _index) => (
                                           <li
-                                            key={index}
+                                            key={_index}
                                             className='flex items-center gap-1'
                                           >
                                             <IconCheck className='h-3 w-3 text-green-500' />

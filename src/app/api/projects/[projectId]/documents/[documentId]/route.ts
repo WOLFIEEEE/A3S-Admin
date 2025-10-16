@@ -7,23 +7,6 @@ import {
 } from '@/lib/db/queries/projects';
 
 // Validation schema for updating project documents
-const updateProjectDocumentSchema = z.object({
-  name: z.string().min(1).optional(),
-  type: z
-    .enum([
-      'audit_report',
-      'remediation_plan',
-      'test_results',
-      'compliance_certificate',
-      'meeting_notes',
-      'vpat',
-      'other'
-    ])
-    .optional(),
-  version: z.string().optional(),
-  tags: z.array(z.string()).optional(),
-  isLatest: z.boolean().optional()
-});
 
 // GET /api/projects/[projectId]/documents/[documentId] - Get specific project document
 export async function GET(
@@ -58,7 +41,6 @@ export async function GET(
       data: document
     });
   } catch (error) {
-    console.error('Error fetching project document:', error);
     return NextResponse.json(
       {
         success: false,
@@ -120,7 +102,6 @@ export async function DELETE(
       message: 'Document deleted successfully'
     });
   } catch (error) {
-    console.error('Error deleting project document:', error);
     return NextResponse.json(
       {
         success: false,

@@ -6,7 +6,7 @@ export default function MiniFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className='bg-background/95 supports-[backdrop-filter]:bg-background/60 border-t backdrop-blur'>
+    <footer className='bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed right-0 bottom-0 left-0 z-50 border-t backdrop-blur'>
       <div className='mx-auto max-w-7xl px-4 py-3 md:px-6'>
         <div className='text-muted-foreground flex items-center justify-between text-xs'>
           <div className='flex items-center gap-2'>

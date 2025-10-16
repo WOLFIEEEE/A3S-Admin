@@ -19,7 +19,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(issue);
   } catch (error) {
-    console.error('Error fetching issue:', error);
     return NextResponse.json(
       { error: 'Failed to fetch issue' },
       { status: 500 }
@@ -27,10 +26,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export async function PATCH(_request: NextRequest, { params }: RouteParams) {
   try {
-    const { issueId } = await params;
-    const updates = await request.json();
+    await params;
 
     // This would update the issue
     // Implementation depends on your requirements
@@ -39,7 +37,6 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       { status: 501 }
     );
   } catch (error) {
-    console.error('Error updating issue:', error);
     return NextResponse.json(
       { error: 'Failed to update issue' },
       { status: 500 }
@@ -47,9 +44,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   try {
-    const { issueId } = await params;
+    await params;
 
     // This would delete the issue
     // Implementation depends on your requirements
@@ -58,7 +55,6 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       { status: 501 }
     );
   } catch (error) {
-    console.error('Error deleting issue:', error);
     return NextResponse.json(
       { error: 'Failed to delete issue' },
       { status: 500 }

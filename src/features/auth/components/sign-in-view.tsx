@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'Sign in to your A3S accessibility compliance dashboard.'
 };
 
-export default function SignInViewPage({ stars }: { stars: number }) {
+export default function SignInViewPage() {
   return (
     <div className='relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <Link

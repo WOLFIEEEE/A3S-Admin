@@ -68,7 +68,15 @@ const clientFormSchema = z.object({
     .optional(),
   billingAmount: z.number().min(0, 'Billing amount must be positive'),
   billingStartDate: z.date(),
-  billingFrequency: z.enum(['monthly', 'quarterly', 'yearly']),
+  billingFrequency: z.enum([
+    'daily',
+    'weekly',
+    'bi-weekly',
+    'monthly',
+    'quarterly',
+    'half-yearly',
+    'yearly'
+  ]),
   paymentMethod: z.enum(['credit_card', 'ach', 'wire', 'check']).optional(),
 
   // Service Requirements
@@ -338,11 +346,11 @@ export default function ClientForm({
 
           {/* Step Navigation */}
           <div className='mt-6 flex items-center justify-between'>
-            {steps.map((step, index) => {
+            {steps.map((step, _index) => {
               const Icon = step.icon;
-              const isActive = index === currentStep;
-              const isCompleted = completedSteps.has(index);
-              const hasError = stepValidation[index] === false;
+              const isActive = _index === currentStep;
+              const isCompleted = completedSteps.has(_index);
+              const hasError = stepValidation[_index] === false;
               const isClickable = true; // Allow clicking any step
 
               return (
@@ -350,7 +358,7 @@ export default function ClientForm({
                   <div className='flex flex-col items-center'>
                     <button
                       type='button'
-                      onClick={() => goToStep(index)}
+                      onClick={() => goToStep(_index)}
                       disabled={isLoading || isSubmitting}
                       className={`flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-200 ${
                         isCompleted
@@ -397,7 +405,7 @@ export default function ClientForm({
                       )}
                     </div>
                   </div>
-                  {index < steps.length - 1 && (
+                  {_index < steps.length - 1 && (
                     <div
                       className={`mx-4 h-0.5 w-8 transition-colors ${
                         isCompleted ? 'bg-green-500' : 'bg-gray-300'

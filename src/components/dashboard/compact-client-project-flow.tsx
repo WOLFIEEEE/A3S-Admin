@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -24,10 +23,8 @@ import {
   IconTrendingUp,
   IconAccessible,
   IconClock,
-  IconDots,
   IconChevronRight,
   IconPlus,
-  IconFilter,
   IconLayoutGrid,
   IconList
 } from '@tabler/icons-react';
@@ -170,6 +167,7 @@ export default function CompactClientProjectFlow({
     });
 
     return items;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clients, projects, searchQuery, filterType, sortBy]);
 
   const ClientCard = ({ client }: { client: Client }) => (
@@ -312,7 +310,7 @@ export default function CompactClientProjectFlow({
 
   const ListView = () => (
     <div className='space-y-2'>
-      {combinedData.map((item, index) => (
+      {combinedData.map((item, _index) => (
         <div key={`${item.type}-${item.data.id}`}>
           {item.type === 'client' ? (
             <ClientCard client={item.data as Client} />
@@ -326,7 +324,7 @@ export default function CompactClientProjectFlow({
 
   const GridView = () => (
     <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-      {combinedData.map((item, index) => (
+      {combinedData.map((item, _index) => (
         <div key={`${item.type}-${item.data.id}`}>
           {item.type === 'client' ? (
             <ClientCard client={item.data as Client} />

@@ -22,7 +22,7 @@ export interface Client {
 
   // Service Requirements
   servicesNeeded: string[] | null;
-  wcagLevel: 'A' | 'AA' | 'AAA' | null;
+  wcagLevel: 'A' | 'AA' | 'AA' | null;
   priorityAreas: string[] | null;
   timeline:
     | 'immediate'

@@ -40,7 +40,6 @@ export async function GET(
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error fetching ticket:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch ticket' },
       { status: 500 }
@@ -91,7 +90,6 @@ export async function PUT(
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error updating ticket:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to update ticket' },
       { status: 500 }
@@ -133,7 +131,6 @@ export async function DELETE(
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error deleting ticket:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to delete ticket' },
       { status: 500 }

@@ -36,7 +36,7 @@ export const accessibilityLevelEnum = pgEnum('accessibility_level', [
 export const clientWcagLevelEnum = pgEnum('client_wcag_level', [
   'A',
   'AA',
-  'AAA'
+  'AA'
 ]);
 export const timelineEnum = pgEnum('timeline', [
   'immediate',
@@ -58,8 +58,12 @@ export const reportingFrequencyEnum = pgEnum('reporting_frequency', [
   'quarterly'
 ]);
 export const billingFrequencyEnum = pgEnum('billing_frequency', [
+  'daily',
+  'weekly',
+  'bi-weekly',
   'monthly',
   'quarterly',
+  'half-yearly',
   'yearly'
 ]);
 export const pricingTierEnum = pgEnum('pricing_tier', [

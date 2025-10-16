@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getIssues, getIssueStats } from '@/lib/db/queries/issues';
+import { getIssues } from '@/lib/db/queries/issues';
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(result.issues);
   } catch (error) {
-    console.error('Error fetching issues:', error);
     return NextResponse.json(
       { error: 'Failed to fetch issues' },
       { status: 500 }
@@ -32,7 +31,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     // This would be used for creating new issues
     // Implementation depends on your requirements
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
       { status: 501 }
     );
   } catch (error) {
-    console.error('Error creating issue:', error);
     return NextResponse.json(
       { error: 'Failed to create issue' },
       { status: 500 }

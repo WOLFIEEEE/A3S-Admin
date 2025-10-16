@@ -2,13 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -40,6 +34,7 @@ interface TicketListingProps {
   showProjectInfo?: boolean;
   onTicketUpdated?: (ticket: Ticket) => void;
   isLoading?: boolean;
+  showHeader?: boolean;
 }
 
 const statusColors: Record<TicketStatus, string> = {
@@ -79,7 +74,8 @@ export default function TicketListing({
   projectId,
   showProjectInfo = false,
   onTicketUpdated,
-  isLoading = false
+  isLoading = false,
+  showHeader = true
 }: TicketListingProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
@@ -185,9 +181,7 @@ export default function TicketListing({
       if (onTicketUpdated) {
         onTicketUpdated(updatedTicket.data);
       }
-    } catch (error) {
-      console.error('Error updating ticket:', error);
-    }
+    } catch (error) {}
   };
 
   if (isLoading) {
@@ -213,27 +207,29 @@ export default function TicketListing({
 
   return (
     <div className='space-y-6'>
-      {/* Header */}
-      <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
-        <div>
-          <h1 className='text-3xl font-bold tracking-tight'>
-            {projectId ? 'Project Tickets' : 'All Tickets'}
-          </h1>
-          <p className='text-muted-foreground'>
-            Manage accessibility compliance tickets and track progress
-          </p>
+      {/* Header - Only show if showHeader is true */}
+      {showHeader && (
+        <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+          <div>
+            <h1 className='text-3xl font-bold tracking-tight'>
+              {projectId ? 'Project Tickets' : 'All Tickets'}
+            </h1>
+            <p className='text-muted-foreground'>
+              Manage accessibility compliance tickets and track progress
+            </p>
+          </div>
+          <Link
+            href={
+              projectId ? `${projectId}/tickets/new` : '/dashboard/tickets/new'
+            }
+          >
+            <Button>
+              <IconPlus className='mr-2 h-4 w-4' />
+              Create Ticket
+            </Button>
+          </Link>
         </div>
-        <Link
-          href={
-            projectId ? `${projectId}/tickets/new` : '/dashboard/tickets/new'
-          }
-        >
-          <Button>
-            <IconPlus className='mr-2 h-4 w-4' />
-            Create Ticket
-          </Button>
-        </Link>
-      </div>
+      )}
 
       {/* Filters */}
       <Card>

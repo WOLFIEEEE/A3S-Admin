@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { CreateClientInput } from '@/types';
-import ClientFormEnhanced from './client-form-enhanced';
+import ClientFormSimple from './client-form-simple';
 import { toast } from 'sonner';
 
 export default function NewClientPage() {
@@ -30,7 +30,6 @@ export default function NewClientPage() {
       // Redirect to the new client's detail page
       router.push(`/dashboard/clients/${result.data.id}`);
     } catch (error) {
-      console.error('Error creating client:', error);
       toast.error(
         error instanceof Error ? error.message : 'Failed to create client'
       );
@@ -43,6 +42,6 @@ export default function NewClientPage() {
   };
 
   return (
-    <ClientFormEnhanced onSubmit={handleCreateClient} onCancel={handleCancel} />
+    <ClientFormSimple onSubmit={handleCreateClient} onCancel={handleCancel} />
   );
 }

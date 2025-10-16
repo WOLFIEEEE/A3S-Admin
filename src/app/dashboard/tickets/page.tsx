@@ -1,6 +1,9 @@
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { IconPlus } from '@tabler/icons-react';
+import Link from 'next/link';
 import TicketListing from '@/features/tickets/components/ticket-listing';
 import { Ticket } from '@/types';
 
@@ -25,17 +28,29 @@ export default async function TicketsPage() {
   const tickets = await fetchTickets();
 
   return (
-    <PageContainer scrollable={true}>
-      <div className='mx-auto w-full max-w-7xl space-y-6'>
-        <div className='flex items-start justify-between'>
-          <Heading
-            title='All Tickets'
-            description='Manage accessibility compliance tickets across all projects'
-          />
+    <PageContainer>
+      <div className='w-full space-y-6'>
+        <div className='flex-shrink-0'>
+          <div className='flex items-start justify-between'>
+            <Heading
+              title='All Tickets'
+              description='Manage accessibility compliance tickets across all projects'
+            />
+            <Link href='/dashboard/tickets/new'>
+              <Button>
+                <IconPlus className='mr-2 h-4 w-4' />
+                Create Ticket
+              </Button>
+            </Link>
+          </div>
+          <Separator className='mt-4' />
         </div>
-        <Separator />
         <div className='w-full'>
-          <TicketListing tickets={tickets} showProjectInfo={true} />
+          <TicketListing
+            tickets={tickets}
+            showProjectInfo={true}
+            showHeader={false}
+          />
         </div>
       </div>
     </PageContainer>

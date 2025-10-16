@@ -1,8 +1,11 @@
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import ClientListing from '@/features/clients/components/client-listing';
 import { Client } from '@/types';
+import { IconPlus } from '@tabler/icons-react';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'A3S Admin | Clients',
@@ -25,14 +28,20 @@ export default async function ClientsPage() {
   const clients = await fetchClients();
 
   return (
-    <PageContainer scrollable={true}>
-      <div className='flex min-h-full w-full flex-col space-y-6'>
+    <PageContainer>
+      <div className='flex w-full flex-col space-y-6'>
         <div className='flex-shrink-0'>
           <div className='flex items-start justify-between'>
             <Heading
               title='Clients'
               description='Manage your A3S accessibility compliance clients'
             />
+            <Link href='/dashboard/clients/new'>
+              <Button className='flex items-center gap-2'>
+                <IconPlus className='h-4 w-4' />
+                New Client
+              </Button>
+            </Link>
           </div>
           <Separator className='mt-4' />
         </div>

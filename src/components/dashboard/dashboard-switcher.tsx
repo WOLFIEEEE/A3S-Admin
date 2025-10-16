@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   Select,
@@ -12,12 +11,12 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import CompactClientProjectFlow from './compact-client-project-flow';
+import FullWidthPageContainer from '@/components/layout/full-width-page-container';
 import {
   IconDashboard,
   IconLayoutDashboard,
   IconChartBar,
   IconUsers,
-  IconTicket,
   IconTrendingUp,
   IconCalendar,
   IconShield,
@@ -27,8 +26,7 @@ import {
   IconCheck,
   IconAlertTriangle,
   IconFileText,
-  IconSettings,
-  IconChevronDown
+  IconSettings
 } from '@tabler/icons-react';
 
 interface DashboardView {
@@ -139,7 +137,7 @@ export default function DashboardSwitcher({
     <div className='bg-background min-h-screen w-full'>
       {/* Full Page Header */}
       <div className='bg-card/50 supports-[backdrop-filter]:bg-card/50 border-b backdrop-blur'>
-        <div className='container mx-auto px-4 py-6'>
+        <div className='w-full px-4 py-6 md:px-6'>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
             <div className='space-y-1'>
               <h1 className='text-2xl font-bold tracking-tight sm:text-3xl'>
@@ -223,9 +221,9 @@ export default function DashboardSwitcher({
       </div>
 
       {/* Dashboard Content - Full Page */}
-      <div className='container mx-auto px-4 py-6'>
-        <div className='space-y-6'>{renderDashboardContent()}</div>
-      </div>
+      <FullWidthPageContainer>
+        {renderDashboardContent()}
+      </FullWidthPageContainer>
     </div>
   );
 }

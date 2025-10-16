@@ -32,31 +32,14 @@ export interface Project {
     | 'other';
   techStack:
     | 'wordpress'
-    | 'react'
-    | 'vue'
-    | 'angular'
-    | 'nextjs'
-    | 'nuxt'
-    | 'laravel'
-    | 'django'
-    | 'rails'
-    | 'nodejs'
-    | 'express'
-    | 'fastapi'
-    | 'spring'
-    | 'aspnet'
-    | 'flutter'
-    | 'react_native'
-    | 'ionic'
-    | 'xamarin'
-    | 'electron'
-    | 'tauri'
-    | 'wails'
-    | 'android_native'
-    | 'ios_native'
-    | 'unity'
-    | 'unreal'
-    | 'other';
+    | 'shopify'
+    | 'drupal'
+    | 'wix'
+    | 'squarespace'
+    | 'webflow'
+    | 'tylertech'
+    | 'other'
+    | string; // Allow custom tech stacks
   complianceRequirements: string[];
   websiteUrl?: string;
   testingMethodology: string[];

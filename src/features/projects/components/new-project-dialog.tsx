@@ -40,8 +40,6 @@ import {
   IconPlus,
   IconAccessible,
   IconCalendar,
-  IconCurrencyDollar,
-  IconClock,
   IconUser,
   IconBuilding,
   IconShield,
@@ -75,34 +73,7 @@ const projectFormSchema = z.object({
     'api',
     'other'
   ]),
-  techStack: z.enum([
-    'wordpress',
-    'react',
-    'vue',
-    'angular',
-    'nextjs',
-    'nuxt',
-    'laravel',
-    'django',
-    'rails',
-    'nodejs',
-    'express',
-    'fastapi',
-    'spring',
-    'aspnet',
-    'flutter',
-    'react_native',
-    'ionic',
-    'xamarin',
-    'electron',
-    'tauri',
-    'wails',
-    'android_native',
-    'ios_native',
-    'unity',
-    'unreal',
-    'other'
-  ]),
+  techStack: z.enum(['wordpress', 'tylertech', 'shopify', 'drupal', 'other']),
   billingType: z.enum(['fixed', 'hourly', 'milestone']),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
@@ -267,7 +238,6 @@ export default function NewProjectDialog({
         );
       }
     } catch (error) {
-      console.error('Error creating project:', error);
       toast.error(
         error instanceof Error ? error.message : 'An unexpected error occurred'
       );
