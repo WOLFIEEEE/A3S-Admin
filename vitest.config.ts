@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     name: 'A3S Admin Tests',
     environment: 'happy-dom',
-    // setupFiles: ['./tests/setup/setup-env.ts'], // Tests folder removed
+    setupFiles: ['./tests/setup/setup-env.ts'],
     globals: true,
     css: true,
     coverage: {
@@ -15,7 +15,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/',
-        // 'tests/', // Tests folder removed
+        'tests/',
         '*.config.*',
         '.next/',
         'public/',
@@ -32,8 +32,8 @@ export default defineConfig({
         statements: 60
       }
     },
-    // include: ['tests/**/*.{test,spec}.{ts,tsx}'], // Tests folder removed
-    exclude: ['node_modules', '.next'], // Removed tests/e2e reference
+    include: ['tests/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['node_modules', '.next', 'tests/e2e'],
     testTimeout: 10000,
     hookTimeout: 10000
   },
