@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import {
   IconEye,
   IconEdit,
@@ -261,12 +260,12 @@ export default function ReportPreview({
                     <p>Saving changes...</p>
                   </div>
                 )}
-                <RichTextEditor
-                  content={editedContent}
-                  onChange={handleContentChange}
+                <Textarea
+                  value={editedContent}
+                  onChange={(e) => handleContentChange(e.target.value)}
                   placeholder='Edit your report content here...'
-                  className='min-h-[500px]'
-                  editable={!isLoading}
+                  className='min-h-[500px] font-mono text-sm'
+                  disabled={isLoading}
                 />
 
                 {hasChanges && (
