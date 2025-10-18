@@ -74,7 +74,7 @@ async function testDatabase() {
       console.log('\n📋 Sample issues:');
       allIssues.forEach((issue, index) => {
         console.log(
-          `   ${index + 1}. ${issue.title} - Severity: ${issue.severity}`
+          `   ${index + 1}. ${issue.issueTitle} - Severity: ${issue.severity}`
         );
       });
     }

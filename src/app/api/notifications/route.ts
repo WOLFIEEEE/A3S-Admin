@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * Handles notification-related operations
  */
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Notifications are handled client-side via the notification service
     // This endpoint can be used for future server-side notification features
@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
       data: []
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Notifications API Error:', error);
     return NextResponse.json(
       {
@@ -39,6 +40,7 @@ export async function POST(request: NextRequest) {
       data: body
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Create Notification API Error:', error);
     return NextResponse.json(
       {

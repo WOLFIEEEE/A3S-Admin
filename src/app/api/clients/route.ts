@@ -89,23 +89,30 @@ export async function GET(request: NextRequest) {
     // Fetch clients from database
     apiLogger.info('Fetching clients from database');
 
-    const clients = await getAllClients({
+    const clientsData = await getAllClients({
       page,
       limit,
       status: status && status !== 'all' ? (status as any) : undefined,
       search: search || undefined
     });
 
-    apiLogger.info(`Successfully fetched ${clients.length} clients`);
+    apiLogger.info(
+      `Successfully fetched ${clientsData.clients.length} clients (Total: ${clientsData.total})`
+    );
 
     const response: ApiResponse = {
       success: true,
-      data: clients
+      data: clientsData
     };
 
     apiLogger.logResponse(endpoint, {
       status: 200,
-      data: { count: clients.length, page, limit },
+      data: {
+        count: clientsData.clients.length,
+        total: clientsData.total,
+        page: clientsData.page,
+        totalPages: clientsData.totalPages
+      },
       duration: timer()
     });
 

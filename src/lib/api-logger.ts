@@ -3,6 +3,8 @@
  * Provides detailed logging for API routes in development
  */
 
+/* eslint-disable no-console */
+
 type LogLevel = 'info' | 'error' | 'warn' | 'success';
 
 interface RequestLog {
