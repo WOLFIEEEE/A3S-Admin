@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,16 +24,14 @@ import {
   IconEdit,
   IconArrowUp,
   IconArrowDown,
-  IconMinus
+  IconMinus,
+  IconLoader2
 } from '@tabler/icons-react';
 import { Ticket, TicketStatus, TicketPriority, TicketType } from '@/types';
 
 interface TicketListingProps {
-  tickets: Ticket[];
   projectId?: string;
   showProjectInfo?: boolean;
-  onTicketUpdated?: (ticket: Ticket) => void;
-  isLoading?: boolean;
   showHeader?: boolean;
 }
 
@@ -70,12 +68,12 @@ const typeColors: Record<TicketType, string> = {
 };
 
 export default function TicketListing({
-  tickets,
   projectId,
-  onTicketUpdated,
-  isLoading = false,
   showHeader = true
 }: TicketListingProps) {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
   const [priorityFilter, setPriorityFilter] = useState<TicketPriority | 'all'>(
@@ -86,6 +84,37 @@ export default function TicketListing({
     'createdAt'
   );
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  useEffect(() => {
+    fetchTickets();
+  }, [projectId]);
+
+  const fetchTickets = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const url = projectId
+        ? `/api/tickets?projectId=${projectId}&limit=1000`
+        : '/api/tickets?limit=1000';
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch tickets');
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        setTickets(result.data?.tickets || result.data || []);
+      } else {
+        throw new Error('Failed to load tickets');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load tickets');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredAndSortedTickets = useMemo(() => {
     let filtered = tickets;
@@ -177,30 +206,36 @@ export default function TicketListing({
       if (!response.ok) throw new Error('Failed to update ticket');
 
       const updatedTicket = await response.json();
-      if (onTicketUpdated) {
-        onTicketUpdated(updatedTicket.data);
-      }
-    } catch (error) {}
+      // Update local state
+      setTickets((prevTickets) =>
+        prevTickets.map((t) =>
+          t.id === ticketId ? { ...t, status: newStatus } : t
+        )
+      );
+    } catch (error) {
+      // Silent fail for now - could add toast notification
+    }
   };
 
   if (isLoading) {
     return (
-      <div className='space-y-4'>
-        {[...Array(5)].map((_, i) => (
-          <Card key={i} className='animate-pulse'>
-            <CardContent className='p-6'>
-              <div className='space-y-3'>
-                <div className='bg-muted h-4 w-3/4 rounded'></div>
-                <div className='bg-muted h-3 w-1/2 rounded'></div>
-                <div className='flex gap-2'>
-                  <div className='bg-muted h-5 w-16 rounded'></div>
-                  <div className='bg-muted h-5 w-20 rounded'></div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className='flex items-center justify-center py-16'>
+        <IconLoader2 className='text-primary h-8 w-8 animate-spin' />
+        <span className='text-muted-foreground ml-2'>Loading tickets...</span>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardContent className='flex flex-col items-center justify-center py-16'>
+          <IconTicket className='text-muted-foreground mb-4 h-16 w-16' />
+          <h3 className='mb-2 text-lg font-medium'>Error loading tickets</h3>
+          <p className='text-muted-foreground mb-6 text-center'>{error}</p>
+          <Button onClick={fetchTickets}>Try Again</Button>
+        </CardContent>
+      </Card>
     );
   }
 
