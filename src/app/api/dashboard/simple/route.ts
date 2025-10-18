@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     try {
       // Only fetch recent data if we have reasonable counts (avoid large queries)
-      if (totalClients > 0 && totalClients < 1000) {
+      if (totalClients >= 0 && totalProjects >= 0) {
         [recentClients, recentProjects, recentIssues] = await Promise.all([
           // Recent clients (limit 5)
           db
@@ -93,7 +93,9 @@ export async function GET(request: NextRequest) {
       }
     } catch (dataError) {
       // If fetching recent data fails, continue with empty arrays
-      console.error('Failed to fetch recent data:', dataError);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to fetch recent data:', dataError);
+      }
     }
 
     // Transform projects data to match expected format
