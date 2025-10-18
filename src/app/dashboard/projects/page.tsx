@@ -16,6 +16,10 @@ export const metadata = {
   description: 'Manage your accessibility compliance projects'
 };
 
+// Force dynamic rendering - this page fetches data from database
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function fetchProjectsData(): Promise<ProjectWithDetails[]> {
   try {
     const [projectsResult] = await Promise.all([

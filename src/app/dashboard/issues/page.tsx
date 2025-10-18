@@ -9,6 +9,10 @@ export const metadata = {
     'Manage accessibility issues across all projects with comprehensive filtering and tracking'
 };
 
+// Force dynamic rendering - this page fetches data from database
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function fetchIssues(): Promise<IssueWithRelations[]> {
   try {
     // Use server-side database query instead of API call

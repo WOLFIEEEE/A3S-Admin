@@ -12,6 +12,10 @@ export const metadata = {
   description: 'Manage accessibility compliance tickets across all projects'
 };
 
+// Force dynamic rendering - this page fetches data from database
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function fetchTickets(): Promise<Ticket[]> {
   try {
     // Use server-side database query instead of API call
