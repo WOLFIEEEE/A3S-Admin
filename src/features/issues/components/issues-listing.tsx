@@ -10,9 +10,15 @@ import { IconLoader2, IconAlertCircle } from '@tabler/icons-react';
 interface Project {
   id: string;
   name: string;
-  status: string;
-  priority: string;
-  wcagLevel: string;
+  clientId: string;
+  client?: {
+    id: string;
+    name: string;
+    company: string;
+    email?: string;
+  } | null;
+  issueCount?: number;
+  criticalIssueCount?: number;
 }
 
 export default function IssuesListing() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -85,11 +85,7 @@ export default function TicketListing({
   );
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  useEffect(() => {
-    fetchTickets();
-  }, [projectId]);
-
-  const fetchTickets = async () => {
+  const fetchTickets = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -114,7 +110,11 @@ export default function TicketListing({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchTickets();
+  }, [fetchTickets]);
 
   const filteredAndSortedTickets = useMemo(() => {
     let filtered = tickets;
