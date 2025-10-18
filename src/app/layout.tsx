@@ -3,11 +3,15 @@ import { Toaster } from '@/components/ui/sonner';
 import { fontVariables } from '@/lib/font';
 import ThemeProvider from '@/components/layout/ThemeToggle/theme-provider';
 import { cn } from '@/lib/utils';
+import { validateOnStartup } from '@/lib/env-validation';
 import type { Metadata, Viewport } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import './globals.css';
 import './theme.css';
+
+// Validate environment variables on startup
+validateOnStartup();
 
 const META_THEME_COLORS = {
   light: '#ffffff',

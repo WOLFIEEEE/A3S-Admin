@@ -1,0 +1,28 @@
+{
+    "buildCommand": "pnpm build",
+    "devCommand": "pnpm dev",
+    "installCommand": "pnpm install",
+    "framework": "nextjs",
+    "functions": {
+        "src/app/api/dashboard/route.ts": {
+            "maxDuration": 30
+        },
+        "src/app/api/reports/generate/route.ts": {
+            "maxDuration": 60
+        },
+        "src/app/api/reports/route.ts": {
+            "maxDuration": 30
+        }
+    },
+    "headers": [{
+        "source": "/api/(.*)",
+        "headers": [{
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+        }]
+    }],
+    "rewrites": [{
+        "source": "/monitoring/(.*)",
+        "destination": "https://o4507609673515008.ingest.sentry.io/$1"
+    }]
+}

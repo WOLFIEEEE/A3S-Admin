@@ -342,8 +342,20 @@ export const columns: ColumnDef<IssueWithRelations>[] = [
       );
     },
     cell: ({ row }) => {
-      const date = row.getValue('createdAt') as Date;
-      return <span className='text-sm'>{format(date, 'MMM dd, yyyy')}</span>;
+      const date = row.getValue('createdAt') as Date | null;
+      if (!date)
+        return <span className='text-muted-foreground text-sm'>N/A</span>;
+      try {
+        return (
+          <span className='text-sm'>
+            {format(new Date(date), 'MMM dd, yyyy')}
+          </span>
+        );
+      } catch {
+        return (
+          <span className='text-muted-foreground text-sm'>Invalid date</span>
+        );
+      }
     },
     size: 110
   },
@@ -351,8 +363,20 @@ export const columns: ColumnDef<IssueWithRelations>[] = [
     accessorKey: 'updatedAt',
     header: 'Last Updated',
     cell: ({ row }) => {
-      const date = row.getValue('updatedAt') as Date;
-      return <span className='text-sm'>{format(date, 'MMM dd, yyyy')}</span>;
+      const date = row.getValue('updatedAt') as Date | null;
+      if (!date)
+        return <span className='text-muted-foreground text-sm'>N/A</span>;
+      try {
+        return (
+          <span className='text-sm'>
+            {format(new Date(date), 'MMM dd, yyyy')}
+          </span>
+        );
+      } catch {
+        return (
+          <span className='text-muted-foreground text-sm'>Invalid date</span>
+        );
+      }
     },
     size: 120
   },

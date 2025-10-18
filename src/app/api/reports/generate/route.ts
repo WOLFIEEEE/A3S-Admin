@@ -12,6 +12,12 @@ import {
 } from '@/lib/ai/report-prompts';
 import { ReportGenerationRequest } from '@/types/reports';
 
+// Vercel serverless function configuration
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const maxDuration = 60; // 60 seconds for AI report generation
+
 export async function POST(request: NextRequest) {
   try {
     const body: ReportGenerationRequest = await request.json();

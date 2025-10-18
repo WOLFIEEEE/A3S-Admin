@@ -18,7 +18,6 @@ import {
   IconPhone,
   IconCurrencyDollar,
   IconCalendar,
-  IconEdit,
   IconPlus,
   IconFileText,
   IconUsers,
@@ -208,15 +207,6 @@ export default function ClientDetailView({ clientId }: ClientDetailViewProps) {
               </div>
             </div>
             <div className='flex items-center gap-2'>
-              <Button
-                variant='outline'
-                onClick={() =>
-                  router.push(`/dashboard/clients/${client.id}/edit`)
-                }
-              >
-                <IconEdit className='mr-2 h-4 w-4' />
-                Edit Client
-              </Button>
               <NewProjectDialog
                 clients={[client]}
                 selectedClientId={client.id}

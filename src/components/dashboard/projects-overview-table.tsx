@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal, Eye, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 
@@ -277,11 +277,23 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
       const startDate = row.getValue('startDate') as Date | null;
       const endDate = row.original.endDate;
 
+      const formatSafeDate = (date: Date | null) => {
+        if (!date) return null;
+        try {
+          return format(new Date(date), 'MMM dd, yyyy');
+        } catch {
+          return 'Invalid date';
+        }
+      };
+
+      const formattedStart = formatSafeDate(startDate);
+      const formattedEnd = formatSafeDate(endDate);
+
       return (
         <div className='flex flex-col text-sm'>
-          {startDate && <span>Start: {format(startDate, 'MMM dd, yyyy')}</span>}
-          {endDate && <span>End: {format(endDate, 'MMM dd, yyyy')}</span>}
-          {!startDate && !endDate && (
+          {formattedStart && <span>Start: {formattedStart}</span>}
+          {formattedEnd && <span>End: {formattedEnd}</span>}
+          {!formattedStart && !formattedEnd && (
             <span className='text-muted-foreground'>Not scheduled</span>
           )}
         </div>
@@ -313,9 +325,17 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
       if (!lastActivity)
         return <span className='text-muted-foreground'>No activity</span>;
 
-      return (
-        <span className='text-sm'>{format(lastActivity, 'MMM dd, yyyy')}</span>
-      );
+      try {
+        return (
+          <span className='text-sm'>
+            {format(new Date(lastActivity), 'MMM dd, yyyy')}
+          </span>
+        );
+      } catch {
+        return (
+          <span className='text-muted-foreground text-sm'>Invalid date</span>
+        );
+      }
     },
     size: 110
   },
@@ -348,12 +368,6 @@ export const columns: ColumnDef<ProjectWithDetails>[] = [
                 View project
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/dashboard/projects/${project.id}/edit`}>
-                <Edit className='mr-2 h-4 w-4' />
-                Edit project
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='text-red-600'>
               <Trash2 className='mr-2 h-4 w-4' />
@@ -379,7 +393,7 @@ export function ProjectsOverviewTable({
   const safeData = Array.isArray(data) ? data : [];
 
   return (
-    <div className='w-full'>
+    <div>
       <DataTable columns={columns} data={safeData} />
     </div>
   );

@@ -21,7 +21,6 @@ import {
   IconPhone,
   IconCalendar,
   IconEye,
-  IconEdit,
   IconTrash,
   IconLoader2
 } from '@tabler/icons-react';
@@ -203,7 +202,7 @@ export default function ClientListing({}: ClientListingProps = {}) {
   }
 
   return (
-    <div className='w-full space-y-6'>
+    <div className='space-y-6'>
       {/* Header */}
       <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
         <div className='flex items-center gap-4'>
@@ -371,12 +370,6 @@ export default function ClientListing({}: ClientListingProps = {}) {
                     <Link href={`/dashboard/clients/${client.id}`}>
                       <Button size='sm' variant='ghost'>
                         <IconEye className='h-4 w-4' />
-                      </Button>
-                    </Link>
-
-                    <Link href={`/dashboard/clients/${client.id}/edit`}>
-                      <Button size='sm' variant='ghost'>
-                        <IconEdit className='h-4 w-4' />
                       </Button>
                     </Link>
 

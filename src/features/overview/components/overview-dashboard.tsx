@@ -1,118 +1,111 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardSwitcher from '@/components/dashboard/dashboard-switcher';
 import EnhancedDashboard from '@/components/dashboard/enhanced-dashboard';
 import { ProjectWithDetails } from '@/components/dashboard/projects-overview-table';
-import { IssueWithRelations } from '@/lib/db/queries/issues';
-import { Card, CardContent } from '@/components/ui/card';
+import { DashboardStatsSkeleton } from '@/components/ui/skeleton-loader';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { IconLoader2, IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconRefresh } from '@tabler/icons-react';
 
 export default function OverviewDashboard() {
   const [clients, setClients] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
-  const [transformedProjects, setTransformedProjects] = useState<
-    ProjectWithDetails[]
-  >([]);
-  const [issues, setIssues] = useState<IssueWithRelations[]>([]);
-  const [totalClients, setTotalClients] = useState(0);
-  const [totalProjects, setTotalProjects] = useState(0);
-  const [activeProjects, setActiveProjects] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [issues, setIssues] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Fetch all dashboard data from single optimized endpoint
+      const response = await fetch('/api/dashboard?limit=100&details=true');
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.details || 'Failed to fetch dashboard data');
+      }
+
+      // Extract data from optimized response
+      const { recentData, stats } = result.data;
+
+      setClients(recentData.clients || []);
+      setProjects(recentData.projects || []);
+      setIssues(recentData.issues || []);
+
+      // Log performance info
+      console.log('Dashboard loaded in', result.data.meta.queryTime, 'ms');
+    } catch (err) {
+      console.error('Dashboard data fetch error:', err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to load dashboard data. Please try again.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
-  const fetchDashboardData = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // Fetch all data in parallel
-      const [clientsResponse, projectsResponse, issuesResponse] =
-        await Promise.all([
-          fetch('/api/clients?limit=1000'),
-          fetch('/api/projects?limit=1000'),
-          fetch('/api/issues?limit=1000')
-        ]);
-
-      if (!clientsResponse.ok || !projectsResponse.ok || !issuesResponse.ok) {
-        throw new Error('Failed to fetch dashboard data');
-      }
-
-      const [clientsResult, projectsResult, issuesData] = await Promise.all([
-        clientsResponse.json(),
-        projectsResponse.json(),
-        issuesResponse.json()
-      ]);
-
-      // Process clients
-      const clientsArray = clientsResult.success
-        ? clientsResult.data?.clients || clientsResult.data || []
-        : [];
-      setClients(clientsArray);
-      setTotalClients(clientsArray.length);
-
-      // Process projects
-      const projectsArray = projectsResult.success
-        ? projectsResult.data?.projects || projectsResult.data || []
-        : [];
-      setProjects(projectsArray);
-      setTotalProjects(projectsArray.length);
-
-      // Calculate active projects
-      const activeCount = projectsArray.filter(
-        (p: any) => !['completed', 'cancelled', 'archived'].includes(p.status)
-      ).length;
-      setActiveProjects(activeCount);
-
-      // Transform projects data to match ProjectWithDetails interface
-      const transformed: ProjectWithDetails[] = projectsArray.map(
-        (project: any) => ({
-          ...project,
-          progress: project.progressPercentage || 0,
-          teamSize: 0,
-          lastActivity: project.updatedAt
-        })
-      );
-      setTransformedProjects(transformed);
-
-      // Process issues
-      const issuesArray = Array.isArray(issuesData) ? issuesData : [];
-      setIssues(issuesArray);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to load dashboard data'
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className='flex items-center justify-center py-16'>
-        <IconLoader2 className='text-primary h-8 w-8 animate-spin' />
-        <span className='text-muted-foreground ml-2'>Loading dashboard...</span>
+      <div className='space-y-8'>
+        <DashboardStatsSkeleton />
       </div>
     );
   }
 
-  if (error) {
+  if (error && clients.length === 0 && projects.length === 0) {
     return (
-      <Card>
-        <CardContent className='flex flex-col items-center justify-center py-16'>
-          <IconAlertCircle className='text-muted-foreground mb-4 h-16 w-16' />
-          <h3 className='mb-2 text-lg font-medium'>Error loading dashboard</h3>
-          <p className='text-muted-foreground mb-6 text-center'>{error}</p>
-          <Button onClick={fetchDashboardData}>Try Again</Button>
-        </CardContent>
-      </Card>
+      <div className='flex min-h-[400px] items-center justify-center'>
+        <Alert variant='destructive' className='max-w-md'>
+          <IconAlertCircle className='h-4 w-4' />
+          <AlertDescription className='ml-2'>
+            <div className='space-y-2'>
+              <p>{error}</p>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={fetchDashboardData}
+                className='mt-2'
+              >
+                <IconRefresh className='mr-2 h-4 w-4' />
+                Retry
+              </Button>
+            </div>
+          </AlertDescription>
+        </Alert>
+      </div>
     );
   }
+
+  const totalClients = clients.length;
+  const totalProjects = projects.length;
+
+  // Calculate active projects
+  const activeProjects = projects.filter(
+    (p) => !['completed', 'cancelled', 'archived'].includes(p.status)
+  ).length;
+
+  // Transform projects data
+  const transformedProjects: ProjectWithDetails[] = projects.map((project) => ({
+    ...project,
+    progress: project.progressPercentage || 0,
+    teamSize: 0,
+    lastActivity: project.updatedAt
+  }));
 
   return (
     <DashboardSwitcher clients={clients} projects={projects}>

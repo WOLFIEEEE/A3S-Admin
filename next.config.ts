@@ -35,22 +35,64 @@ const securityHeaders = [
 
 // Define the base Next.js configuration
 const baseConfig: NextConfig = {
+  // Vercel deployment optimizations
+  output: 'standalone',
+  poweredByHeader: false,
+  compress: true,
+
+  // Image optimization
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'api.slingacademy.com',
         port: ''
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+        port: ''
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        port: ''
       }
-    ]
+    ],
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384]
   },
+
+  // Package transpilation
   transpilePackages: ['geist'],
+
+  // External packages for server components
+  serverExternalPackages: ['postgres', '@supabase/supabase-js'],
+
+  // Experimental features for better performance
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons']
+  },
+
+  // Security headers
   async headers() {
     return [
       {
         // Apply security headers to all routes
         source: '/:path*',
         headers: securityHeaders
+      }
+    ];
+  },
+
+  // Redirects for better SEO
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/dashboard/overview',
+        permanent: true
       }
     ];
   }

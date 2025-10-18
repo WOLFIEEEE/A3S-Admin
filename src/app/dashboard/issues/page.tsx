@@ -14,7 +14,7 @@ export const revalidate = 0;
 export default function IssuesPage() {
   return (
     <PageContainer>
-      <div className='w-full space-y-6'>
+      <div className='space-y-6'>
         {/* Issues Listing with Real Data */}
         <IssuesListing />
       </div>

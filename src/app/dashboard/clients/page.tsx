@@ -18,7 +18,7 @@ export const revalidate = 0;
 export default function ClientsPage() {
   return (
     <PageContainer>
-      <div className='flex w-full flex-col space-y-6'>
+      <div className='flex flex-col space-y-6'>
         {/* Header */}
         <div className='flex items-start justify-between'>
           <div>
@@ -38,7 +38,7 @@ export default function ClientsPage() {
         <Separator />
 
         {/* Clients Listing with Real Data */}
-        <div className='w-full flex-1'>
+        <div className='flex-1'>
           <ClientListing />
         </div>
       </div>

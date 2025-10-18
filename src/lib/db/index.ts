@@ -25,14 +25,22 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error('Supabase environment variables are required');
 }
 
-// PostgreSQL connection for Drizzle
+// PostgreSQL connection for Drizzle - Optimized for Vercel serverless
 const client = postgres(DATABASE_URL, {
   prepare: false,
-  max: 1, // Vercel serverless functions work best with 1 connection
+  max: 1, // Vercel serverless functions work best with 1 connection per instance
   idle_timeout: 20, // Close idle connections after 20 seconds
-  connect_timeout: 10, // Connection timeout
+  connect_timeout: 10, // Reduced for faster cold starts
   // Let the platform (Vercel) and database provider (Supabase) handle SSL
-  ssl: DATABASE_URL?.includes('localhost') ? false : 'prefer'
+  ssl: DATABASE_URL?.includes('localhost') ? false : 'prefer',
+  // Add statement timeout for serverless
+  statement_timeout: 30000, // 30 seconds max per query
+  onnotice: () => {}, // Suppress notices
+  debug: false,
+  // Optimize for serverless
+  transform: {
+    undefined: null
+  }
 });
 
 // Drizzle database instance with schema

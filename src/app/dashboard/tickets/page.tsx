@@ -18,7 +18,7 @@ export const revalidate = 0;
 export default function TicketsPage() {
   return (
     <PageContainer>
-      <div className='w-full space-y-6'>
+      <div className='space-y-6'>
         {/* Header */}
         <div className='flex items-start justify-between'>
           <div>

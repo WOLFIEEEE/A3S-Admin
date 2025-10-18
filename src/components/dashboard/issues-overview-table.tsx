@@ -302,16 +302,40 @@ export const columns: ColumnDef<IssueWithRelations>[] = [
       );
     },
     cell: ({ row }) => {
-      const date = row.getValue('createdAt') as Date;
-      return <span className='text-sm'>{format(date, 'MMM dd, yyyy')}</span>;
+      const date = row.getValue('createdAt') as Date | null;
+      if (!date)
+        return <span className='text-muted-foreground text-sm'>N/A</span>;
+      try {
+        return (
+          <span className='text-sm'>
+            {format(new Date(date), 'MMM dd, yyyy')}
+          </span>
+        );
+      } catch {
+        return (
+          <span className='text-muted-foreground text-sm'>Invalid date</span>
+        );
+      }
     }
   },
   {
     accessorKey: 'updatedAt',
     header: 'Last Updated',
     cell: ({ row }) => {
-      const date = row.getValue('updatedAt') as Date;
-      return <span className='text-sm'>{format(date, 'MMM dd, yyyy')}</span>;
+      const date = row.getValue('updatedAt') as Date | null;
+      if (!date)
+        return <span className='text-muted-foreground text-sm'>N/A</span>;
+      try {
+        return (
+          <span className='text-sm'>
+            {format(new Date(date), 'MMM dd, yyyy')}
+          </span>
+        );
+      } catch {
+        return (
+          <span className='text-muted-foreground text-sm'>Invalid date</span>
+        );
+      }
     }
   },
   {
@@ -370,7 +394,7 @@ export function IssuesOverviewTable({ data = [] }: IssuesOverviewTableProps) {
   const safeData = Array.isArray(data) ? data : [];
 
   return (
-    <div className='w-full'>
+    <div>
       <DataTable columns={columns} data={safeData} />
     </div>
   );
