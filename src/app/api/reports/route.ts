@@ -101,10 +101,21 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     apiLogger.logError(endpoint, error);
 
+    // Log additional error details for database errors
+    if (error && typeof error === 'object' && 'cause' in error) {
+      apiLogger.info('Database error cause:', error.cause);
+    }
+
     const errorResponse = {
       success: false,
       error: 'Failed to fetch reports',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
+      ...(process.env.NODE_ENV === 'development' &&
+      error &&
+      typeof error === 'object' &&
+      'cause' in error
+        ? { cause: error.cause }
+        : {})
     };
 
     apiLogger.logResponse(endpoint, {

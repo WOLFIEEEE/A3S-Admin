@@ -28,15 +28,11 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 // PostgreSQL connection for Drizzle
 const client = postgres(DATABASE_URL, {
   prepare: false,
-  max: 20, // Maximum number of connections
+  max: 1, // Vercel serverless functions work best with 1 connection
   idle_timeout: 20, // Close idle connections after 20 seconds
   connect_timeout: 10, // Connection timeout
-  ssl:
-    process.env.NODE_ENV === 'production'
-      ? { rejectUnauthorized: true }
-      : process.env.DATABASE_URL?.includes('localhost')
-        ? false
-        : { rejectUnauthorized: false } // Allow self-signed certs in dev
+  // Let the platform (Vercel) and database provider (Supabase) handle SSL
+  ssl: DATABASE_URL?.includes('localhost') ? false : 'prefer'
 });
 
 // Drizzle database instance with schema

@@ -124,11 +124,19 @@ class APILogger {
     if (error instanceof Error) {
       console.error(`Message:    ${error.message}`);
       console.error(`Name:       ${error.name}`);
+
+      // Log error cause if it exists (common in database errors)
+      if ('cause' in error && error.cause) {
+        console.error(`Cause:      ${JSON.stringify(error.cause, null, 2)}`);
+      }
+
       if (error.stack) {
         console.error(`Stack:      ${error.stack}`);
       }
-    } else {
+    } else if (error && typeof error === 'object') {
       console.error(`Error:      ${JSON.stringify(error, null, 2)}`);
+    } else {
+      console.error(`Error:      ${String(error)}`);
     }
 
     console.error('!'.repeat(80) + '\n');
