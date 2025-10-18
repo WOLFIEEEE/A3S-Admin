@@ -26,8 +26,7 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 // PostgreSQL connection for Drizzle
-const connectionString = DATABASE_URL;
-const client = postgres(connectionString, {
+const client = postgres(DATABASE_URL, {
   prepare: false,
   max: 20, // Maximum number of connections
   idle_timeout: 20, // Close idle connections after 20 seconds

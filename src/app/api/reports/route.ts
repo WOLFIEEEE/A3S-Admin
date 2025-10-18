@@ -69,8 +69,13 @@ export async function GET(request: NextRequest) {
       }
     });
   } catch (error) {
+    console.error('Reports API Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch reports' },
+      {
+        success: false,
+        error: 'Failed to fetch reports',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
@@ -194,8 +199,13 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    console.error('Create Report API Error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create report' },
+      {
+        success: false,
+        error: 'Failed to create report',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
