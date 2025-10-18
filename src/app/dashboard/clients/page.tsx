@@ -12,6 +12,10 @@ export const metadata = {
   description: 'Manage your A3S accessibility compliance clients'
 };
 
+// Force dynamic rendering - this page fetches data from database
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function fetchClients(): Promise<Client[]> {
   try {
     // Use server-side database query instead of API call

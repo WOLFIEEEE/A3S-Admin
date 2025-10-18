@@ -14,19 +14,6 @@ import {
   ticketComments,
   ticketAttachments
 } from './schema';
-import { eq } from 'drizzle-orm';
-
-// Helper function to generate random dates
-function randomDate(start: Date, end: Date): Date {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
-}
-
-// Helper function to generate random IDs (for external references)
-function randomId(): string {
-  return Math.random().toString(36).substring(2, 15);
-}
 
 // Helper function to encrypt sensitive data (mock encryption)
 function mockEncrypt(data: string): string {
@@ -825,12 +812,9 @@ async function seedTickets(projectIds: string[]) {
 async function seedTicketComments(ticketIds: string[]) {
   const commentData = ticketIds.flatMap((ticketId) => {
     const comments = [];
-    const startDate = new Date('2024-01-01');
 
     // Generate 3 comments per ticket
     for (let i = 0; i < 3; i++) {
-      const _date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
-
       comments.push({
         ticketId,
         userId: `user-00${(i % 3) + 1}`,
@@ -902,7 +886,7 @@ if (require.main === module) {
     .then(() => {
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(() => {
       process.exit(1);
     });
 }

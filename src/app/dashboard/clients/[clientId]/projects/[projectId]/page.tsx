@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     'View and manage project information, milestones, team, and accessibility issues'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface ProjectDetailPageProps {
   params: Promise<{
     clientId: string;

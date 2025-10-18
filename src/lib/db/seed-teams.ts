@@ -172,7 +172,7 @@ export async function seedTeams() {
     ];
 
     for (const dev of developers) {
-      const [newDev] = await db
+      await db
         .insert(teamMembers)
         .values({
           teamId: internalTeam.id,
@@ -228,7 +228,7 @@ export async function seedTeams() {
     ];
 
     for (const qa of qaMembers) {
-      const [newQA] = await db
+      await db
         .insert(teamMembers)
         .values({
           teamId: internalTeam.id,
@@ -276,7 +276,7 @@ export async function seedTeams() {
     ];
 
     for (const contractor of contractors) {
-      const [newContractor] = await db
+      await db
         .insert(teamMembers)
         .values({
           teamId: externalTeam.id,
@@ -305,7 +305,7 @@ if (require.main === module) {
     .then(() => {
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(() => {
       process.exit(1);
     });
 }

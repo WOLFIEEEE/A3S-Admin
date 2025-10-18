@@ -14,6 +14,10 @@ export const metadata = {
   description: 'Add a new client to the A3S accessibility compliance platform'
 };
 
+// Force dynamic rendering - child component may fetch data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function ClientNewPage() {
   return (
     <PageContainer>

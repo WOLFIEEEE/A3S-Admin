@@ -41,7 +41,7 @@ const sentryOptions: Sentry.NodeOptions | Sentry.EdgeOptions = {
   ],
 
   // Before send hook - sanitize sensitive data
-  beforeSend(event, hint) {
+  beforeSend(event) {
     // Remove sensitive data from request bodies
     if (event.request?.data) {
       const data = event.request.data as Record<string, any>;

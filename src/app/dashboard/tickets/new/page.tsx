@@ -17,6 +17,10 @@ export const metadata = {
   description: 'Create a new accessibility compliance ticket'
 };
 
+// Force dynamic rendering - this page uses authentication and searchParams
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Mock data - replace with actual API calls
 const mockProjects: Project[] = [
   {

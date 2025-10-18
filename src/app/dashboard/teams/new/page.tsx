@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   description: 'Create a new team in your organization'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function NewTeamPage() {
   return (
     <PageContainer>

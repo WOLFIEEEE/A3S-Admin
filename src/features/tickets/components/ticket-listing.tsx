@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -72,7 +72,6 @@ const typeColors: Record<TicketType, string> = {
 export default function TicketListing({
   tickets,
   projectId,
-  showProjectInfo = false,
   onTicketUpdated,
   isLoading = false,
   showHeader = true

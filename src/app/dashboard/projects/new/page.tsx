@@ -14,6 +14,10 @@ export const metadata = {
   description: 'Add a new project to the A3S accessibility compliance platform'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function ProjectNewPage() {
   return (
     <PageContainer>

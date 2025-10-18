@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   description: 'View and manage ticket information, comments, and attachments'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface TicketDetailPageProps {
   params: Promise<{
     ticketId: string;

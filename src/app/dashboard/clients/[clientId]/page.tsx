@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   description: 'View and manage client information and projects'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface ClientDetailPageProps {
   params: Promise<{
     clientId: string;

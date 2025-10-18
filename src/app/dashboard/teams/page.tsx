@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   description: 'Manage teams, members, and organizational structure'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function TeamsPage() {
   return (
     <PageContainer>

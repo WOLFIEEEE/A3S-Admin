@@ -78,7 +78,7 @@ if (
     normalizeDepth: 10,
 
     // Before send hook - sanitize sensitive data
-    beforeSend(event, hint) {
+    beforeSend(event) {
       // Remove sensitive data
       if (event.request?.cookies) {
         event.request.cookies = {};

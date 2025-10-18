@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     'View and manage accessibility issue details, comments, and status updates'
 };
 
+// Force dynamic rendering - this page fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface IssueDetailPageProps {
   params: Promise<{
     issueId: string;

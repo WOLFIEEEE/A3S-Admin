@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   description: 'Generate a new AI-powered accessibility report'
 };
 
+// Force dynamic rendering - child component fetches data from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function NewReportPage() {
   return (
     <PageContainer>

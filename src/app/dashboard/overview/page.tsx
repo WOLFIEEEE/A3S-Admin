@@ -7,6 +7,10 @@ export const metadata: Metadata = {
     'A3S accessibility compliance dashboard overview with key metrics and insights.'
 };
 
+// Force dynamic rendering - this page fetches data from database
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function OverviewPage() {
   return <OverViewLayout />;
 }
