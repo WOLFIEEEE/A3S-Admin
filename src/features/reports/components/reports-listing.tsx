@@ -74,7 +74,8 @@ export default function ReportsListing() {
   const fetchReports = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/reports');
+      // Use fast API endpoint for better performance
+      const response = await fetch('/api/reports/fast?limit=20');
 
       if (!response.ok) {
         throw new Error('Failed to fetch reports');

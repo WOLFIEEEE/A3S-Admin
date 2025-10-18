@@ -21,8 +21,15 @@ export default function OverviewDashboard() {
       setLoading(true);
       setError(null);
 
-      // Fetch all dashboard data from single optimized endpoint
-      const response = await fetch('/api/dashboard?limit=100&details=true');
+      // Fetch all dashboard data from single optimized endpoint with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      const response = await fetch('/api/dashboard?limit=50&details=true', {
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -41,10 +48,16 @@ export default function OverviewDashboard() {
       setProjects(recentData.projects || []);
       setIssues(recentData.issues || []);
 
-      // Log performance info
-      console.log('Dashboard loaded in', result.data.meta.queryTime, 'ms');
+      // Log performance info (development only)
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log('Dashboard loaded in', result.data.meta.queryTime, 'ms');
+      }
     } catch (err) {
-      console.error('Dashboard data fetch error:', err);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error('Dashboard data fetch error:', err);
+      }
       setError(
         err instanceof Error
           ? err.message
