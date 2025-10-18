@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import OverViewLayout from './layout';
+import OverviewDashboard from '@/features/overview/components/overview-dashboard';
 
 export const metadata: Metadata = {
   title: 'A3S Admin | Dashboard Overview',
@@ -7,10 +7,10 @@ export const metadata: Metadata = {
     'A3S accessibility compliance dashboard overview with key metrics and insights.'
 };
 
-// Force dynamic rendering - this page fetches data from database
+// Force dynamic rendering - child component fetches data from API
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default function OverviewPage() {
-  return <OverViewLayout />;
+  return <OverviewDashboard />;
 }
